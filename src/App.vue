@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="p-10 font-bold">
     <router-link to="/">AXIOMS</router-link> |
     <router-link to="/visulizer">VISULIZER</router-link>
   </nav>
@@ -7,6 +7,11 @@
 </template>
 
 <style lang="scss">
+
+/* src/style.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -16,10 +21,8 @@
 }
 
 nav {
-  padding: 30px;
 
   a {
-    font-weight: bold;
     color: #2c3e50;
 
     &.router-link-exact-active {
