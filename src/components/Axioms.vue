@@ -1,0 +1,35 @@
+<template>
+  <div class="hello">
+    <h1>Axioms of Genre</h1>
+    <h3>A visulizer (for my opinionated view) of electronic music genres</h3>
+
+    <p>
+      This map of music will only explore electornic music,
+      ie tempo driven music with a consistent beat grid
+      <br>
+      furthermore
+    </p>
+    <ul>
+      <li>this will be based on my understanding and appreciation of the music</li>
+      <li>it will contain broad sweeping statements in order to categorize (generalize)</li>
+      <li>exceptions and observations will be mentioned on a case by case basis</li>
+      <li>such as elements that are pointers to categories</li>
+    </ul>
+
+  </div>
+</template>
+
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
+  props: {
+  },
+})
+export default class Axioms extends Vue {
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+</style>
