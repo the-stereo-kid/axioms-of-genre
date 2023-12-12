@@ -1,0 +1,27 @@
+{
+    "Techno": {
+        "title": "Techno",
+        "bpmRange": "110-130",
+        "description": "Techno music is driven by a dependable kick, often refered to as the 4 on the floor, since every beat of each bar is marked by the kick drum. This is accompanied by a drivey bassline which makes this fall within the Deep House category. Minimal techno might only contain a few elements and play with the space in between, but in general techno contains a wide variety of pecussion, syths, guitar/string insturments, pew pew noises and combines them with cool synnergy."
+    },
+    "DnB": {
+        "title": "Drum and Bass",
+        "bpmRange": "140-180",
+        "description": "Drum and Bass music alternats between the kick and the snare on the beat of the track. Often accompnied by funk and high energy transitions, this genre gets the crowd jumping up and down as the call and response hypes them up."
+    },
+    "House": {
+        "title": "House",
+        "bpmRange": "115-135",
+        "description": "House music is driven by the baseline and is less about the kick. When the bass is dubbier we call it Deep House and this can be an overarching defention for much other electronic music genres. Lots of people love house music since it's great for chilling and dancing or even just road trips."
+    },
+    "Dub": {
+        "title": "Dubstep",
+        "bpmRange": "70-90",
+        "description": "Dubstep seems like such a low tempo compared to the other genres, however this is due to half-time, where a breakbeat style is used to amplify the bassline beat, ie dub. This creates an implicit call and response with a bigger bang on the call, making the crowd bop back and forth or headbang as they flow with the energy."
+    },
+    "Trance": {
+        "title": "Trance",
+        "bpmRange": "130-160",
+        "description": "To increase the energy level in trance they push the tempo high and then they double up on each kick with a trance gate, which makes it gallop. The genre is is also characterised by big mood changes and vastly different influences, such as big drops, long melodic break downs with spoken word or remixes of every other genre you could think of."
+    }
+}

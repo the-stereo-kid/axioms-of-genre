@@ -1,0 +1,9 @@
+{
+  "genres": [
+    { "id": 1, "name": "Techno", "bpm": [120, 140], "info": "Techno info here" },
+    { "id": 2, "name": "House", "bpm": [110, 130], "info": "House info here" },
+    { "id": 3, "name": "Trance", "bpm": [130, 150], "info": "Trance info here" },
+    { "id": 4, "name": "DnB", "bpm": [160, 180], "info": "DnB info here" },
+    { "id": 5, "name": "Dub", "bpm": [70, 90], "info": "Dub info here" }
+  ]
+}
