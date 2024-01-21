@@ -102,8 +102,20 @@ template {
 .graph {
     width: 100%;
     height: 100%;
-    background: #dddddddd;
+    background: #dddddd33;
     border-radius: 4%;
+}
+
+.graph-container circle {
+    background-color: #ee7129dd;
+    fill: #ee7129dd !important;
+    opacity: 1;
+}
+
+.graph-container path {
+  stroke: #ee7129dd !important;
+  stroke-width: 2 !important;
+  opacity: .1;
 }
 </style>
     
