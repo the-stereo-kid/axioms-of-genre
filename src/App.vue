@@ -1,13 +1,12 @@
 <template>
   <nav class="p-10 font-bold">
     <router-link to="/">AXIOMS</router-link> |
-    <router-link to="/visulizer">VISULIZER</router-link>
+    <router-link to="/visualizer">VISUALIZER</router-link>
   </nav>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
-
 /* src/style.css */
 // @tailwind base;
 @tailwind components;
@@ -15,7 +14,7 @@
 
 // style app with dark theme
 body {
-    background: #222222;
+  background: #222222;
 }
 
 #app {
@@ -30,21 +29,21 @@ body {
   // use montserrat for headings and titles
   h1 {
     margin-top: 0.4;
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     font-size: 56px;
   }
 
   h2 {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
   }
 
-h3 {
-  font-family: 'Montserrat';
-}
+  h3 {
+    font-family: "Montserrat";
+  }
 }
 
 nav {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   a {
     color: #dddddddd;
 
