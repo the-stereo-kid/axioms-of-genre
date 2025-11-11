@@ -37,7 +37,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 ```bash
 npm install
-npm run serve
+npm run dev
 ```
 
 ### 4. Test the Basic Setup
@@ -135,7 +135,7 @@ This allows anonymous users to READ but not WRITE.
 
 ```bash
 # In your terminal
-npm run serve
+npm run dev
 ```
 
 **Browser Console Tests:**

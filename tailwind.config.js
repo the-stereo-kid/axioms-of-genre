@@ -1,20 +1,20 @@
 // tailwind.config.js
-import typography from '@tailwindcss/typography';
-import forms from '@tailwindcss/forms';
-import aspectRatio from '@tailwindcss/aspect-ratio';
+const typography = require('@tailwindcss/typography')
+const forms = require('@tailwindcss/forms')
+const aspectRatio = require('@tailwindcss/aspect-ratio')
 
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {}
   },
   plugins: [
     typography,
     forms,
-    aspectRatio,
-  ],
+    aspectRatio
+  ]
 }

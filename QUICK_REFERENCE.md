@@ -9,13 +9,13 @@
 npm install
 
 # Run dev server
-npm run serve
+npm run dev
 
 # Build for production
 npm run build
 
-# Lint and fix
-npm run lint
+# Preview production build locally
+npm run preview
 ```
 
 ## 📁 Project Structure

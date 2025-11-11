@@ -4,25 +4,21 @@ declare module "*.vue" {
   export default component;
 }
 
+/// <reference types="vite/client" />
+
 /**
- * 🎯 LEARNING: TypeScript Environment Variables (Vue CLI)
+ * 🎯 LEARNING: TypeScript Environment Variables (Vite)
  *
- * This tells TypeScript about Vue CLI's process.env variables
- * Vue CLI (Webpack) exposes env vars at BUILD TIME through process.env
+ * Vite injects build-time env vars on import.meta.env
+ * Prefixed values (VITE_*) are exposed to the client.
  *
- * Why is this needed?
- * - TypeScript doesn't know about webpack-injected env vars by default
- * - We need to "declare" these types so TypeScript understands them
- *
- * Key differences:
- * - Vue CLI: VUE_APP_* prefix → process.env.VUE_APP_*
- * - Vite: VITE_* prefix → import.meta.env.VITE_*
- *
- * Learn more: https://cli.vuejs.org/guide/mode-and-env.html
+ * Learn more: https://vitejs.dev/guide/env-and-mode.html
  */
-declare namespace NodeJS {
-  interface ProcessEnv {
-    readonly VUE_APP_SUPABASE_URL: string;
-    readonly VUE_APP_SUPABASE_ANON_KEY: string;
-  }
+interface ImportMetaEnv {
+  readonly VITE_SUPABASE_URL: string
+  readonly VITE_SUPABASE_ANON_KEY: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
 }

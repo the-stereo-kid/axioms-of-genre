@@ -21,7 +21,7 @@ Before you start, ensure:
 
 **Steps:**
 
-1. Start dev server: `npm run serve`
+1. Start dev server: `npm run dev`
 2. Open browser console (F12)
 3. Run:
    ```javascript
@@ -299,7 +299,7 @@ console.log("Subgenres of Techno:", subgenres);
 
 ```bash
 # Restart dev server
-npm run serve
+npm run dev
 ```
 
 ### Issue: Empty graph (no nodes)

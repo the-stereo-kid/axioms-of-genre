@@ -5,6 +5,7 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 ## ✅ What's Done
 
 ### Infrastructure
+
 - ✅ Supabase client setup (`src/lib/supabaseClient.ts`)
 - ✅ TypeScript types for database (`src/lib/database.types.ts`)
 - ✅ Query helper functions (scaffolded with TODOs)
@@ -12,12 +13,14 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 - ✅ All components migrated to Composition API
 
 ### Documentation
+
 - ✅ **LEARNING_GUIDE.md** - Your complete Fireship-style course
 - ✅ **QUICK_REFERENCE.md** - Cheat sheet for common patterns
 - ✅ **TESTING_GUIDE.md** - Step-by-step testing checklist
 - ✅ **README.md** - Updated with full project overview
 
 ### Components
+
 - ✅ `GenresGraph.vue` - Dynamic graph from Supabase data
 - ✅ `GenresDetail.vue` - Genre info display with store integration
 - ✅ `VisualizerView.vue` - Simplified parent component
@@ -30,10 +33,12 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 ### Step 1: Set Up Your Database (15 minutes)
 
 1. **Open Supabase Dashboard**
+
    - Go to https://app.supabase.com
    - Navigate to your project
 
 2. **Run the Schema**
+
    - Open SQL Editor
    - Copy entire contents of `supabase-schema.sql`
    - Paste and execute
@@ -47,15 +52,18 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 ### Step 2: Test Basic Functionality (10 minutes)
 
 1. **Start the app**
+
    ```bash
-   npm run serve
+   npm run dev
    ```
 
 2. **Navigate to visualizer**
-   - Go to http://localhost:8080/visualizer
+
+   - Go to http://localhost:5173/visualizer
    - Should see 5 genre nodes in a circle
 
 3. **Test interaction**
+
    - Click "Techno" node
    - Details should appear below graph
    - Try other genres
@@ -63,17 +71,19 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 4. **Browser console test**
    ```javascript
    // Open DevTools (F12) and try:
-   import { supabase } from './src/lib/supabaseClient'
-   const { data } = await supabase.from('genres').select('*')
-   console.table(data)
+   import { supabase } from "./src/lib/supabaseClient";
+   const { data } = await supabase.from("genres").select("*");
+   console.table(data);
    ```
 
 ### Step 3: Complete Your TODOs (2-3 hours learning time)
 
 #### TODO 1: Implement Query Functions ⭐
+
 **File:** `src/lib/genreQueries.ts`
 
 **Tasks:**
+
 - Implement `fetchSubgenres(parentId)`
 - Implement `fetchGenreElementsByGenreId(genreId)`
 
@@ -84,9 +94,11 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 ---
 
 #### TODO 2: Complete Store Logic ⭐⭐
+
 **File:** `src/stores/genreStore.ts`
 
 **Tasks:**
+
 - Implement `getSubgenresByParentId` computed getter
 - Implement `selectGenreByName` action
 
@@ -97,14 +109,17 @@ Congrats! Your Axioms of Genre project has been scaffolded with Supabase + Pinia
 ---
 
 #### TODO 3: Add Your Data to Supabase ⭐
+
 **In Supabase Dashboard:**
 
 **Tasks:**
+
 1. Add 2-3 subgenres you know well
 2. Create relationships in `genre_relationships`
 3. Connect elements to genres with influence strength
 
 **Example:**
+
 ```sql
 -- Add Acid House
 INSERT INTO genres (name, bpm_min, bpm_max, description, is_root)
@@ -124,9 +139,11 @@ VALUES (
 ---
 
 #### TODO 4: Expand Graph Visualization ⭐⭐⭐
+
 **File:** `src/components/GenresGraph.vue`
 
 **Tasks:**
+
 - Modify `nodes` computed to include subgenres
 - Update `edges` to connect subgenres to parents
 - Adjust `layouts` to position subgenres nicely
@@ -138,9 +155,11 @@ VALUES (
 ---
 
 #### TODO 5: Display Genre Elements ⭐⭐
+
 **File:** `src/components/GenresDetail.vue`
 
 **Tasks:**
+
 - Uncomment the elements display code
 - Fix the data structure to match your query results
 - Style the influence bars
@@ -171,18 +190,18 @@ Use **TESTING_GUIDE.md** as your checklist. Test after each TODO!
 
 ```javascript
 // Check Supabase connection
-const { data, error } = await supabase.from('genres').select('*')
-console.log(data, error)
+const { data, error } = await supabase.from("genres").select("*");
+console.log(data, error);
 
 // Check Pinia state
-const store = useGenreStore()
-console.log(store.genres)
-console.log(store.rootGenres)
+const store = useGenreStore();
+console.log(store.genres);
+console.log(store.rootGenres);
 
 // Test query functions
-import { fetchRootGenres } from './lib/genreQueries'
-const genres = await fetchRootGenres()
-console.table(genres)
+import { fetchRootGenres } from "./lib/genreQueries";
+const genres = await fetchRootGenres();
+console.table(genres);
 ```
 
 ---
@@ -192,17 +211,20 @@ console.table(genres)
 By completing this project, you'll understand:
 
 ### Supabase (Primary Focus) ⭐⭐⭐
+
 - PostgreSQL database setup
 - Row Level Security (RLS)
 - Query builder patterns
 - JOIN queries for relationships
 
 ### Pinia (Secondary Focus) ⭐⭐
+
 - Store definition with Composition API
 - State, getters, actions
 - Component communication via store
 
 ### Vue 3 Composition API ⭐
+
 - `<script setup>` syntax
 - `ref()` vs `reactive()`
 - `computed()` and lifecycle hooks
@@ -215,14 +237,17 @@ By completing this project, you'll understand:
 Once you complete the main TODOs:
 
 1. **Add Real-time Subscriptions**
+
    - Update graph when data changes in Supabase
    - Learn WebSocket patterns
 
 2. **Create Admin Panel**
+
    - Add/edit/delete genres
    - Implement authentication
 
 3. **Enhanced Visualization**
+
    - Filter by BPM range
    - Color code by relationship type
    - Zoom and pan
@@ -251,12 +276,14 @@ Copy this to track your progress:
 ## My Progress
 
 ### Setup
+
 - [ ] Database schema created in Supabase
 - [ ] App runs without errors
 - [ ] Can see 5 genres in graph
 - [ ] Click works and shows details
 
 ### Implementation
+
 - [ ] fetchSubgenres() completed
 - [ ] fetchGenreElementsByGenreId() completed
 - [ ] getSubgenresByParentId getter works
@@ -266,12 +293,14 @@ Copy this to track your progress:
 - [ ] Elements display with influence bars
 
 ### Testing
+
 - [ ] All tests in TESTING_GUIDE.md pass
 - [ ] No console errors
 - [ ] Graph is responsive
 - [ ] Data updates correctly
 
 ### Learning
+
 - [ ] Understand Supabase queries
 - [ ] Comfortable with Pinia store
 - [ ] Can use Composition API
@@ -311,4 +340,3 @@ The best way to learn is by doing. Start with the Supabase setup and work throug
 - Read error messages carefully
 
 You've got all the tools you need - now go build something awesome! 🔥
-

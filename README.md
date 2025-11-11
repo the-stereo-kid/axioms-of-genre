@@ -21,10 +21,10 @@ npm install
 cp .env.local.example .env.local
 
 # Run the app
-npm run serve
+npm run dev
 ```
 
-Then navigate to `http://localhost:8080`
+Then navigate to `http://localhost:5173`
 
 ---
 
@@ -171,7 +171,7 @@ Get these from: Supabase Dashboard → Settings → API
 
 ```bash
 npm install
-npm run serve
+npm run dev
 ```
 
 ---
@@ -269,8 +269,8 @@ See [TESTING_GUIDE.md](./TESTING_GUIDE.md) for complete testing checklist.
 **Quick test:**
 
 ```bash
-npm run serve
-# Navigate to http://localhost:8080/visualizer
+npm run dev
+# Navigate to http://localhost:5173/visualizer
 # Click on genre nodes - details should appear below
 ```
 
