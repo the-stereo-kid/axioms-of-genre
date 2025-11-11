@@ -166,17 +166,17 @@ export const useGenreStore = defineStore("genre", () => {
   /**
    * Select a genre (when clicking on graph node)
    * This loads the genre details and its elements
-   * 
+   *
    * 🎯 LEARNING: TypeScript Union Types
-   * 
+   *
    * Notice how we handle Genre | undefined (from .find())
    * and Genre | null (from fetchGenreById())
-   * 
+   *
    * TypeScript forces us to think about all possible states:
    * - Genre found in cache
    * - Genre fetched from database
    * - Genre not found anywhere (null/undefined)
-   * 
+   *
    * This prevents bugs where we assume data exists!
    */
   async function selectGenre(genreId: number) {

@@ -24,7 +24,7 @@
 <script setup lang="ts">
 /**
  * 🎯 COMPOSITION API - Axioms Component
- * 
+ *
  * Static content component - no logic needed!
  * This shows how simple components become with Composition API.
  */

@@ -54,6 +54,7 @@ This project is designed as a hands-on learning experience:
 ### The Axioms
 
 **Core Principles:**
+
 - Focus on electronic music (tempo-driven with consistent beat grid)
 - Based on musical understanding and appreciation
 - Broad categorization with noted exceptions
@@ -65,6 +66,7 @@ This project is designed as a hands-on learning experience:
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Vue 3** with Composition API (`<script setup>`)
 - **TypeScript** for type safety
 - **Pinia** for state management
@@ -72,11 +74,13 @@ This project is designed as a hands-on learning experience:
 - **Tailwind CSS** for styling
 
 ### Backend
+
 - **Supabase** (PostgreSQL + REST API)
 - Row Level Security (RLS) for data protection
 - Real-time subscriptions (ready to implement)
 
 ### Developer Experience
+
 - Vue DevTools for debugging
 - TypeScript auto-completion
 - Hot module replacement
@@ -115,21 +119,25 @@ This project is designed as a hands-on learning experience:
 ### Core Tables
 
 **genres** - Main and sub-genres
+
 ```sql
 id, name, bpm_min, bpm_max, description, color, is_root
 ```
 
 **genre_elements** - Building blocks (acid sound, breakbeat, etc.)
+
 ```sql
 id, name, description
 ```
 
 **genre_element_relations** - How elements define genres
+
 ```sql
 genre_id, element_id, influence_strength (1-10)
 ```
 
 **genre_relationships** - How genres connect
+
 ```sql
 parent_genre_id, child_genre_id, relationship_type
 ```
@@ -173,18 +181,21 @@ npm run serve
 This project is structured as a hands-on course. Complete these in order:
 
 ### Module 1: Supabase Foundation ⭐
+
 - Understand PostgreSQL + REST API
 - Learn Row Level Security (RLS)
 - Master query patterns and JOINs
 - **Files:** `src/lib/genreQueries.ts`
 
 ### Module 2: Pinia State Management ⭐⭐
+
 - Define stores with Composition API
 - State, getters, and actions
 - Component communication via store
 - **Files:** `src/stores/genreStore.ts`
 
 ### Module 3: Composition API ⭐⭐⭐
+
 - Migrate from class components
 - Use `ref()`, `computed()`, lifecycle hooks
 - Modern TypeScript patterns
@@ -193,6 +204,7 @@ This project is structured as a hands-on course. Complete these in order:
 ### Your Tasks 🎯
 
 Complete TODOs in:
+
 1. `src/lib/genreQueries.ts` - Implement query functions
 2. `src/stores/genreStore.ts` - Complete store logic
 3. `src/components/GenresGraph.vue` - Add subgenre expansion
@@ -203,6 +215,7 @@ Complete TODOs in:
 ## 🔥 Features
 
 ### Current
+
 - ✅ Graph visualization of root genres
 - ✅ Click nodes to see genre details
 - ✅ Dynamic data from Supabase
@@ -211,6 +224,7 @@ Complete TODOs in:
 - ✅ Modern Composition API
 
 ### To Implement (Your Tasks!)
+
 - ⏳ Subgenre expansion on node click
 - ⏳ Genre elements display with influence strength
 - ⏳ Relationship visualization
@@ -253,6 +267,7 @@ axioms-of-genre/
 See [TESTING_GUIDE.md](./TESTING_GUIDE.md) for complete testing checklist.
 
 **Quick test:**
+
 ```bash
 npm run serve
 # Navigate to http://localhost:8080/visualizer
@@ -264,11 +279,13 @@ npm run serve
 ## 📚 Resources
 
 ### Official Documentation
+
 - [Supabase Docs](https://supabase.com/docs)
 - [Pinia Docs](https://pinia.vuejs.org/)
 - [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html)
 
 ### Video Tutorials
+
 - [Fireship: Supabase in 100 Seconds](https://www.youtube.com/watch?v=zBZgdTb-dns)
 - [Fireship: Pinia in 100 Seconds](https://www.youtube.com/watch?v=JGC7aAC-3y8)
 
@@ -297,24 +314,28 @@ MIT License - See LICENSE file for details
 By working through this project, you'll master:
 
 ✅ **Supabase:**
+
 - PostgreSQL setup and schema design
 - Row Level Security (RLS)
 - Query builder patterns
 - JOIN queries and relationships
 
 ✅ **Pinia:**
+
 - Composition API store pattern
 - State, getters, actions
 - Component communication
 - DevTools debugging
 
 ✅ **Vue 3:**
+
 - `<script setup>` syntax
 - Reactive state with `ref()` and `computed()`
 - Lifecycle hooks
 - TypeScript integration
 
 ✅ **Modern Patterns:**
+
 - Type-safe database queries
 - Centralized state management
 - Component composition

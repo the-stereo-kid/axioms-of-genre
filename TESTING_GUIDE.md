@@ -6,10 +6,10 @@
 
 Before you start, ensure:
 
-- [ ] Supabase project is created
-- [ ] `.env.local` file exists with valid credentials
-- [ ] Database schema is created (ran `supabase-schema.sql`)
-- [ ] Dependencies are installed (`npm install`)
+- [x] Supabase project is created
+- [x] `.env.local` file exists with valid credentials
+- [x] Database schema is created (ran `supabase-schema.sql`)
+- [x] Dependencies are installed (`npm install`)
 
 ---
 
@@ -20,17 +20,19 @@ Before you start, ensure:
 **Goal:** Verify database connection works
 
 **Steps:**
+
 1. Start dev server: `npm run serve`
 2. Open browser console (F12)
 3. Run:
    ```javascript
-   import { supabase } from './src/lib/supabaseClient'
-   const { data, error } = await supabase.from('genres').select('*')
-   console.log('Data:', data)
-   console.log('Error:', error)
+   import { supabase } from "./src/lib/supabaseClient";
+   const { data, error } = await supabase.from("genres").select("*");
+   console.log("Data:", data);
+   console.log("Error:", error);
    ```
 
 **Expected Result:**
+
 - ✅ `data` contains 5 root genres (Techno, House, Trance, DnB, Dub)
 - ✅ `error` is null
 - ❌ If error: Check `.env.local` and Supabase dashboard
@@ -42,18 +44,21 @@ Before you start, ensure:
 **Goal:** Test query helper functions
 
 **Steps:**
+
 1. In console:
+
    ```javascript
-   import { fetchRootGenres, fetchAllGenres } from './src/lib/genreQueries'
-   
-   const rootGenres = await fetchRootGenres()
-   console.table(rootGenres)
-   
-   const allGenres = await fetchAllGenres()
-   console.log(`Total genres: ${allGenres.length}`)
+   import { fetchRootGenres, fetchAllGenres } from "./src/lib/genreQueries";
+
+   const rootGenres = await fetchRootGenres();
+   console.table(rootGenres);
+
+   const allGenres = await fetchAllGenres();
+   console.log(`Total genres: ${allGenres.length}`);
    ```
 
 **Expected Result:**
+
 - ✅ `fetchRootGenres()` returns 5 genres
 - ✅ All have `is_root: true`
 - ✅ Each has: `id`, `name`, `bpm_min`, `bpm_max`, `description`, `color`
@@ -65,6 +70,7 @@ Before you start, ensure:
 **Goal:** Verify store state management
 
 **Steps:**
+
 1. Open Vue DevTools (Chrome extension)
 2. Go to Pinia tab
 3. Find `genre` store
@@ -72,18 +78,20 @@ Before you start, ensure:
 5. Watch state update
 
 **Expected Result:**
+
 - ✅ `genres` array populates
 - ✅ `loading.genres` toggles true → false
 - ✅ `rootGenres` computed shows 5 items
 
 **Console Test:**
-```javascript
-import { useGenreStore } from '@/stores/genreStore'
-const store = useGenreStore()
 
-await store.loadAllData()
-console.log('Root genres:', store.rootGenres)
-console.log('All genres:', store.genres.length)
+```javascript
+import { useGenreStore } from "@/stores/genreStore";
+const store = useGenreStore();
+
+await store.loadAllData();
+console.log("Root genres:", store.rootGenres);
+console.log("All genres:", store.genres.length);
 ```
 
 ---
@@ -93,10 +101,12 @@ console.log('All genres:', store.genres.length)
 **Goal:** Test network graph rendering
 
 **Steps:**
+
 1. Navigate to `/visualizer` route
 2. Wait for graph to load
 
 **Expected Result:**
+
 - ✅ 5 genre nodes appear in circle
 - ✅ Central empty node in middle
 - ✅ Lines connect center to all genres
@@ -104,6 +114,7 @@ console.log('All genres:', store.genres.length)
 - ✅ Nodes are orange (#ee7129)
 
 **Visual Check:**
+
 - Nodes should be clickable (cursor changes on hover)
 - Graph should fit in container (600x400px)
 
@@ -114,10 +125,12 @@ console.log('All genres:', store.genres.length)
 **Goal:** Test genre selection and detail display
 
 **Steps:**
+
 1. Click on "Techno" node in graph
 2. Look at detail panel below graph
 
 **Expected Result:**
+
 - ✅ Detail panel shows genre info:
   - Name: "Techno"
   - BPM Range: "120 - 140"
@@ -126,9 +139,10 @@ console.log('All genres:', store.genres.length)
 - ✅ No console errors
 
 **Console Check:**
+
 ```javascript
-const store = useGenreStore()
-console.log('Selected:', store.selectedGenre?.name)
+const store = useGenreStore();
+console.log("Selected:", store.selectedGenre?.name);
 ```
 
 ---
@@ -138,11 +152,13 @@ console.log('Selected:', store.selectedGenre?.name)
 **Goal:** Test switching between genres
 
 **Steps:**
+
 1. Click "Techno" → verify details
 2. Click "House" → verify details change
 3. Click "DnB" → verify details change
 
 **Expected Result:**
+
 - ✅ Details update instantly
 - ✅ Previous selection cleared
 - ✅ Smooth transitions
@@ -155,12 +171,14 @@ console.log('Selected:', store.selectedGenre?.name)
 **Goal:** Verify loading indicators work
 
 **Steps:**
+
 1. Open DevTools → Network tab
 2. Set throttling to "Slow 3G"
 3. Refresh page
 4. Watch loading states
 
 **Expected Result:**
+
 - ✅ "Loading genres..." appears during fetch
 - ✅ Graph shows after data loads
 - ✅ Loading state clears properly
@@ -172,11 +190,13 @@ console.log('Selected:', store.selectedGenre?.name)
 **Goal:** Test error scenarios
 
 **Steps:**
+
 1. Temporarily break `.env.local` (wrong URL)
 2. Refresh page
 3. Check console
 
 **Expected Result:**
+
 - ✅ Error message in console
 - ✅ App doesn't crash
 - ✅ Loading state clears
@@ -191,12 +211,12 @@ console.log('Selected:', store.selectedGenre?.name)
 **After implementing:**
 
 ```javascript
-import { fetchSubgenres } from './src/lib/genreQueries'
+import { fetchSubgenres } from "./src/lib/genreQueries";
 
 // First, add a subgenre in Supabase
 // Then test:
-const subs = await fetchSubgenres(1) // 1 = Techno's ID
-console.log('Techno subgenres:', subs)
+const subs = await fetchSubgenres(1); // 1 = Techno's ID
+console.log("Techno subgenres:", subs);
 ```
 
 **Expected:** Array of subgenres connected to parent
@@ -208,10 +228,10 @@ console.log('Techno subgenres:', subs)
 **After implementing:**
 
 ```javascript
-import { fetchGenreElementsByGenreId } from './src/lib/genreQueries'
+import { fetchGenreElementsByGenreId } from "./src/lib/genreQueries";
 
-const elements = await fetchGenreElementsByGenreId(1)
-console.table(elements)
+const elements = await fetchGenreElementsByGenreId(1);
+console.table(elements);
 ```
 
 **Expected:** Array of elements with `influence_strength` and joined `genre_elements` data
@@ -223,11 +243,11 @@ console.table(elements)
 **After implementing `getSubgenresByParentId`:**
 
 ```javascript
-const store = useGenreStore()
-await store.loadAllData()
+const store = useGenreStore();
+await store.loadAllData();
 
-const subgenres = store.getSubgenresByParentId.value(1)
-console.log('Subgenres of Techno:', subgenres)
+const subgenres = store.getSubgenresByParentId.value(1);
+console.log("Subgenres of Techno:", subgenres);
 ```
 
 **Expected:** Array of subgenre objects (not just IDs)
@@ -239,11 +259,13 @@ console.log('Subgenres of Techno:', subgenres)
 **After implementing in GenresGraph.vue:**
 
 **Steps:**
+
 1. Add subgenres in Supabase (e.g., Acid House under House)
 2. Click "House" node in graph
 3. Look for new nodes appearing
 
 **Expected:**
+
 - ✅ Subgenre nodes appear around parent
 - ✅ Edges connect parent to subgenres
 - ✅ Layout positions them nicely
@@ -255,11 +277,13 @@ console.log('Subgenres of Techno:', subgenres)
 **After implementing in GenresDetail.vue:**
 
 **Steps:**
+
 1. Add genre-element relations in Supabase
 2. Click a genre with elements
 3. Check detail panel
 
 **Expected:**
+
 - ✅ "Genre Elements" section appears
 - ✅ Each element shows name + influence bar
 - ✅ Influence bars scale correctly (1-10 → 10%-100%)
@@ -272,6 +296,7 @@ console.log('Subgenres of Techno:', subgenres)
 ### Issue: "Cannot find module '@/stores/genreStore'"
 
 **Solution:**
+
 ```bash
 # Restart dev server
 npm run serve
@@ -280,14 +305,16 @@ npm run serve
 ### Issue: Empty graph (no nodes)
 
 **Debug:**
+
 ```javascript
-const store = useGenreStore()
-console.log('Genres loaded:', store.genres.length)
-console.log('Root genres:', store.rootGenres.length)
-console.log('Loading state:', store.loading.genres)
+const store = useGenreStore();
+console.log("Genres loaded:", store.genres.length);
+console.log("Root genres:", store.rootGenres.length);
+console.log("Loading state:", store.loading.genres);
 ```
 
 **Common causes:**
+
 - Supabase URL/key incorrect
 - RLS policies not set
 - Data not in database
@@ -297,6 +324,7 @@ console.log('Loading state:', store.loading.genres)
 **Cause:** Trying to access data before it loads
 
 **Solution:** Add null checks:
+
 ```vue
 <div v-if="genreStore.selectedGenre">
   {{ genreStore.selectedGenre.name }}
@@ -306,15 +334,16 @@ console.log('Loading state:', store.loading.genres)
 ### Issue: Graph nodes not clickable
 
 **Debug:**
+
 ```typescript
 // In GenresGraph.vue
 const eventHandlers = {
-  'node:click': ({ node }) => {
-    console.log('Clicked:', node) // Should log node name
-    const genre = genreStore.genres.find(g => g.name === node)
-    console.log('Found genre:', genre) // Should log genre object
-  }
-}
+  "node:click": ({ node }) => {
+    console.log("Clicked:", node); // Should log node name
+    const genre = genreStore.genres.find((g) => g.name === node);
+    console.log("Found genre:", genre); // Should log genre object
+  },
+};
 ```
 
 ---
@@ -326,11 +355,13 @@ Test your app's performance:
 ### Network Requests
 
 **Expected:**
+
 - Initial load: 3 requests (genres, relationships, elements)
 - Each < 100ms on good connection
 - Total data < 50KB
 
 **Test:**
+
 ```bash
 # In DevTools Network tab
 # Filter: Fetch/XHR
@@ -340,11 +371,13 @@ Test your app's performance:
 ### Component Render Time
 
 **Expected:**
+
 - Graph renders < 200ms
 - Detail updates < 50ms
 - No layout shifts
 
 **Test with Performance tab:**
+
 1. Record
 2. Click through genres
 3. Stop
@@ -376,18 +409,21 @@ Test your app's performance:
 As you add features, test:
 
 ### After Adding Subgenres:
+
 - [ ] Subgenres appear in table
 - [ ] Clicking parent shows subgenres in graph
 - [ ] Edges connect correctly
 - [ ] Layout looks good
 
 ### After Adding Elements:
+
 - [ ] Elements shown in detail view
 - [ ] Influence bars render
 - [ ] Sorted by strength
 - [ ] Styling looks good
 
 ### After Adding Real-time:
+
 - [ ] Open 2 browser tabs
 - [ ] Update genre in Supabase dashboard
 - [ ] Both tabs update automatically
@@ -402,6 +438,7 @@ Copy this for your testing sessions:
 ## Test Session: [Date]
 
 ### Basic Tests
+
 - [ ] Supabase connection works
 - [ ] Query functions return data
 - [ ] Pinia store loads data
@@ -410,6 +447,7 @@ Copy this for your testing sessions:
 - [ ] Details display correctly
 
 ### Your TODOs
+
 - [ ] fetchSubgenres() works
 - [ ] fetchGenreElementsByGenreId() works
 - [ ] Store getters work
@@ -417,12 +455,12 @@ Copy this for your testing sessions:
 - [ ] Element display works
 
 ### Issues Found:
-1. 
-2. 
-3. 
+
+1.
+2.
+3.
 
 ### Notes:
-
 ```
 
 ---
@@ -430,4 +468,3 @@ Copy this for your testing sessions:
 **Happy Testing! 🧪**
 
 Remember: Test early, test often. Small tests save big debugging sessions!
-

@@ -1,14 +1,12 @@
 <template>
   <div class="detail-container">
     <!-- Loading state -->
-    <div v-if="genreStore.loading.selectedGenre" class="loading">
-      Loading genre details...
-    </div>
-    
+    <div v-if="genreStore.loading.selectedGenre" class="loading">Loading genre details...</div>
+
     <!-- Genre details -->
     <div v-else-if="genreStore.selectedGenre" class="genre-detail">
       <h2 class="genre-title">{{ genreStore.selectedGenre.name }}</h2>
-      
+
       <!-- BPM Range -->
       <div class="bpm-range">
         <span class="label">BPM Range:</span>
@@ -16,10 +14,10 @@
           {{ genreStore.selectedGenre.bpm_min }} - {{ genreStore.selectedGenre.bpm_max }}
         </span>
       </div>
-      
+
       <!-- Description -->
       <p class="description">{{ genreStore.selectedGenre.description }}</p>
-      
+
       <!-- TODO: Genre Elements Section -->
       <!-- This will show the building blocks of this genre -->
       <div v-if="genreStore.selectedGenreElements.length > 0" class="elements-section">
@@ -33,10 +31,12 @@
             <span class="influence-value">{{ elem.influence_strength }}/10</span>
           </div>
           -->
-          <p class="todo-note">🎯 TODO: Display genre elements here once you implement fetchGenreElementsByGenreId()</p>
+          <p class="todo-note">
+            🎯 TODO: Display genre elements here once you implement fetchGenreElementsByGenreId()
+          </p>
         </div>
       </div>
-      
+
       <!-- TODO: Related Genres Section -->
       <!-- Show other genres that are connected to this one -->
       <div class="related-genres-section">
@@ -44,7 +44,7 @@
         <p class="todo-note">🎯 TODO: Use relationships to show parent/child genres</p>
       </div>
     </div>
-    
+
     <!-- Empty state -->
     <div v-else class="empty-state">
       <p>Click on a genre node to see details</p>
@@ -55,20 +55,20 @@
 <script setup lang="ts">
 /**
  * 🎯 COMPOSITION API - GenresDetail Component
- * 
+ *
  * KEY CONCEPTS:
  * - <script setup>: Simplified syntax, no need for export default
  * - No props definition needed, use defineProps() if you have props
  * - Direct access to store via useGenreStore()
  * - Template has direct access to store without "this."
- * 
+ *
  * Learn more: https://vuejs.org/api/sfc-script-setup.html
  */
 
-import { useGenreStore } from '@/stores/genreStore'
+import { useGenreStore } from "@/stores/genreStore";
 
 // Get the genre store instance
-const genreStore = useGenreStore()
+const genreStore = useGenreStore();
 
 /**
  * 🎯 LEARNING NOTE:
@@ -90,7 +90,8 @@ const genreStore = useGenreStore()
   min-height: 300px;
 }
 
-.loading, .empty-state {
+.loading,
+.empty-state {
   text-align: center;
   padding: 2rem;
   color: #999;
@@ -101,8 +102,14 @@ const genreStore = useGenreStore()
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .genre-title {
@@ -124,7 +131,7 @@ const genreStore = useGenreStore()
 
 .value {
   color: #ddd;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .description {
@@ -134,13 +141,15 @@ const genreStore = useGenreStore()
 }
 
 /* TODO Styles */
-.elements-section, .related-genres-section {
+.elements-section,
+.related-genres-section {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.elements-section h3, .related-genres-section h3 {
+.elements-section h3,
+.related-genres-section h3 {
   color: #ee7129;
   margin-bottom: 1rem;
   font-size: 1.5rem;

@@ -57,13 +57,13 @@ export async function fetchAllGenres() {
 /**
  * Fetch a single genre by ID
  * Used when you click on a node in the graph
- * 
+ *
  * 🎯 LEARNING: Type Safety with Nullable Returns
- * 
+ *
  * This function returns `Genre | null` because:
  * - Supabase might not find the genre (returns null)
  * - There could be a database error (we return null)
- * 
+ *
  * Why not throw errors instead?
  * - Returning null is more flexible for the caller
  * - They can decide how to handle missing data
