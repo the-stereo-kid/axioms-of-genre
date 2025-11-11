@@ -1,82 +1,78 @@
 <template>
-  <div class="about">
-    <GenresGraph @node-selected="handleNodeSelected" />
-    <GenresDetail
-      class="detail"
-      :genre="genre.title"
-      :bpmRange="genre.bpmRange"
-      :description="genre.description"
-    />
+  <div class="visualizer-view">
+    <div class="header">
+      <h1>Genre Visualization</h1>
+      <p class="subtitle">Explore the relationships between electronic music genres</p>
+    </div>
+    
+    <!-- Graph visualization -->
+    <GenresGraph />
+    
+    <!-- Genre detail view (controlled by Pinia store) -->
+    <GenresDetail />
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import GenresGraph from "@/components/GenresGraph.vue";
-import GenresDetail from "@/components/GenresDetail.vue";
+<script setup lang="ts">
+/**
+ * 🎯 COMPOSITION API - VisualizerView
+ * 
+ * This is now super simple! The complexity moved to:
+ * - GenresGraph: Handles visualization and node selection
+ * - GenresDetail: Displays selected genre from store
+ * - genreStore: Manages all state
+ * 
+ * BEFORE (Class Component):
+ * - Hardcoded genre data in Map
+ * - Manual event handling with @node-selected
+ * - Prop drilling to detail component
+ * 
+ * AFTER (Composition API + Pinia):
+ * - Data comes from Supabase via store
+ * - Components communicate through shared store
+ * - No prop drilling needed!
+ * 
+ * This is the power of centralized state management!
+ */
 
-const genres = new Map<string, any>();
-genres.set("Trance", {
-  id: 1,
-  title: "Trance",
-  bpmRange: [110, 130],
-  description: "Trance music is driven by a galloping baseline",
-});
-genres.set("Techno", {
-  id: 2,
-  title: "Techno",
-  bpmRange: [110, 130],
-  description: "Techno music is driven by a dependable kick",
-});
-genres.set("House", {
-  id: 1,
-  title: "Deep House",
-  bpmRange: [110, 130],
-  description: "House music is driven by a syncopated baseline",
-});
-genres.set("DnB", {
-  id: 1,
-  title: "Drum and Bass",
-  bpmRange: [110, 130],
-  description: "Drum and Bass music is driven by a kick-snare drum patten",
-});
-genres.set("Dub", {
-  id: 1,
-  title: "Dub & Dubstep",
-  bpmRange: [80, 100],
-  description: "Dub music is driven by minimal elements and a deep baseline",
-});
+import GenresGraph from '@/components/GenresGraph.vue'
+import GenresDetail from '@/components/GenresDetail.vue'
 
-@Options({
-  data() {
-    return {
-      genre: genres.get("Techno"),
-    };
-  },
-  components: {
-    GenresGraph,
-    GenresDetail,
-  },
-  methods: {
-    handleNodeSelected(genre: string) {
-      console.log("Selected genre:", genre);
-      this.genre = genres.get(genre);
-    },
-  },
-  computed: {
-    genre(): any {
-      return genres.get("Techno");
-    },
-  },
-})
-export default class HomeView extends Vue {
-  genre: any;
-}
+/**
+ * 🎯 LEARNING NOTE: Component Communication
+ * 
+ * OLD WAY (Props & Events):
+ * Parent ← @event ← Child ← props → Parent
+ * 
+ * NEW WAY (Pinia Store):
+ * Component A → Store ← Component B
+ * 
+ * Benefits:
+ * - No prop drilling through multiple levels
+ * - No event chain management
+ * - Single source of truth
+ * - Easy to debug with DevTools
+ */
 </script>
 
-<style>
-.detail {
-  width: 50%;
-  margin: auto;
+<style scoped>
+.visualizer-view {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #999;
+  font-size: 1.1rem;
 }
 </style>

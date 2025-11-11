@@ -1,6 +1,12 @@
 <template>
-  <div class="graph-container" ref="graph-container">
+  <div class="graph-container" ref="graphContainer">
+    <!-- Loading state -->
+    <div v-if="genreStore.loading.genres" class="loading-overlay">
+      <p>Loading genres...</p>
+    </div>
+    
     <v-network-graph
+      v-else
       class="graph"
       :nodes="nodes"
       :edges="edges"
@@ -10,109 +16,160 @@
   </div>
 </template>
 
-<script lang="ts">
-import { VNetworkGraph, Nodes, Edges, Layouts } from "v-network-graph";
-import * as vNG from "v-network-graph";
-import { defineComponent } from "vue";
+<script setup lang="ts">
+/**
+ * 🎯 COMPOSITION API - GenresGraph Component
+ * 
+ * This component builds a network graph from Supabase data dynamically.
+ * 
+ * KEY CONCEPTS:
+ * - ref() for DOM references
+ * - computed() for derived reactive data
+ * - Watchers to rebuild graph when store data changes
+ * 
+ * GRAPH STRUCTURE:
+ * - Central node (empty) connects to all root genres
+ * - Root genres can expand to show subgenres (TODO for you!)
+ * - Layout uses circular positioning
+ */
 
-// TODO: create API endpoint to store Nodes and Edges
-// explore Graph QL for implementation and dynamic queries
-const nodes: Nodes = {
-  // start with empty node as central point
-  node0: { name: "" },
+import { ref, computed, watch, onMounted } from 'vue'
+import { VNetworkGraph, type Nodes, type Edges, type Layouts } from 'v-network-graph'
+import type * as vNG from 'v-network-graph'
+import { useGenreStore } from '@/stores/genreStore'
 
-  Techno: { name: "Techno" },
-  Trance: { name: "Trance" },
-  House: { name: "House" },
-  DnB: { name: "DnB" },
-  Dub: { name: "Dub" },
-};
+// Get store instance
+const genreStore = useGenreStore()
 
-const edges: Edges = {
-  edge1: { source: "node0", target: "Techno" },
-  edge2: { source: "node0", target: "Trance" },
-  edge3: { source: "node0", target: "House" },
-  edge4: { source: "node0", target: "DnB" },
-  edge5: { source: "node0", target: "Dub" },
-};
+// DOM reference
+const graphContainer = ref<HTMLElement | null>(null)
 
-const layouts: Layouts = {
-  nodes: {
-    node0: { x: 0, y: 0 }, //centre
-    Techno: { x: -57 * 2, y: 19 * 2 }, // top left
-    Trance: { x: 57 * 2, y: 19 * 2 }, // top right
-    House: { x: 0 * 2, y: 60 * 2 }, // bottom centre
-    DnB: { x: -35 * 2, y: 49 * 2 }, // botom left
-    Dub: { x: 35 * 2, y: 49 * 2 }, // bottom right
+/**
+ * 🎯 COMPUTED: Dynamic Nodes
+ * 
+ * Builds nodes object from Pinia store data.
+ * Nodes include a central node + all root genres
+ * 
+ * TODO: Expand this to include subgenres when a genre is selected
+ */
+const nodes = computed<Nodes>(() => {
+  const nodeMap: Nodes = {
+    center: { name: '' } // Central node
+  }
+  
+  // Add all root genres
+  genreStore.rootGenres.forEach(genre => {
+    nodeMap[genre.name] = { 
+      name: genre.name,
+      color: genre.color || '#ee7129'
+    }
+  })
+  
+  // TODO: If a genre is selected, add its subgenres
+  // Hint: Use genreStore.selectedGenre and getSubgenresByParentId
+  
+  return nodeMap
+})
+
+/**
+ * 🎯 COMPUTED: Dynamic Edges
+ * 
+ * Creates connections between nodes.
+ * Currently connects center to all root genres.
+ * 
+ * TODO: Add edges for genre relationships (subgenres, influences, etc.)
+ */
+const edges = computed<Edges>(() => {
+  const edgeMap: Edges = {}
+  let edgeCount = 0
+  
+  // Connect center to all root genres
+  genreStore.rootGenres.forEach(genre => {
+    edgeMap[`edge${edgeCount++}`] = {
+      source: 'center',
+      target: genre.name
+    }
+  })
+  
+  // TODO: Add edges from genre_relationships table
+  // genreStore.relationships.forEach(rel => { ... })
+  
+  return edgeMap
+})
+
+/**
+ * 🎯 COMPUTED: Dynamic Layouts
+ * 
+ * Positions nodes in a circular pattern around the center.
+ * Uses trigonometry for circular arrangement!
+ */
+const layouts = computed<Layouts>(() => {
+  const layoutMap: Layouts = {
+    nodes: {
+      center: { x: 0, y: 0 }
+    }
+  }
+  
+  const rootGenres = genreStore.rootGenres
+  const angleStep = (2 * Math.PI) / rootGenres.length
+  const radius = 120
+  
+  rootGenres.forEach((genre, index) => {
+    const angle = index * angleStep - Math.PI / 2 // Start at top
+    layoutMap.nodes[genre.name] = {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius
+    }
+  })
+  
+  // TODO: Position subgenres in an outer ring or connected to parents
+  
+  return layoutMap
+})
+
+/**
+ * 🎯 EVENT HANDLERS
+ * 
+ * Handle node clicks to select genres and show details
+ */
+const eventHandlers: vNG.EventHandlers = {
+  'node:click': ({ node }) => {
+    // Don't select the center node
+    if (node === 'center') return
+    
+    // Find genre by name and select it in the store
+    const genre = genreStore.genres.find(g => g.name === node)
+    if (genre) {
+      genreStore.selectGenre(genre.id)
+    }
   },
-};
+  
+  // TODO: Add hover tooltip showing BPM range and quick info
+  // 'node:pointerover': ({ node }) => {
+  //   // Show tooltip with genre.description
+  // },
+  // 'node:pointerout': ({ node }) => {
+  //   // Hide tooltip
+  // }
+}
 
-// TODO: configs will be used to specify the dynamic updates for the graph
-// const configs = reactive()
+/**
+ * Load data when component mounts
+ */
+onMounted(() => {
+  genreStore.loadAllData()
+})
 
-// const eventHandlers: vNG.EventHandlers = {
-//   // wildcard: capture all events
-
-//   "node:click": function ({ node, event }) {
-//     console.log(event);
-//     console.log(node);
-//     interface EventHandlers {
-//         // existing event handlers...
-
-//         emitNode(node: string): void;
-//     }
-//   },
-//   //  TODO: create a tooltip to see the summary data
-//   //   "node:pointerover": (type, event) => {
-//   //     console.log("type: " + type);
-//   //     console.log("event: " + event);
-//   //   },
-// };
-
-// TODO: emit event to update detail component with genre information and display sub-genre nodes & connections
-// const selectGenre = (genre: string | undefined) => {
-//     emitGenre(genre)
-// }
-
-// const { emit } = getCurrentInstance()!;
-
-// const selectGenre = (genreId: string) => {
-//       // Handle the logic for selecting a genre
-//       console.log('Selected genre:', genreId);
-//       // Example: Emit an event to parent component
-//       // Replace 'your-event-name' with an appropriate event name
-//       emit('your-event-name', genreId);
-//     };
-
-export default defineComponent({
-  name: "GenresGraph",
-  props: [],
-  methods: {
-    emitNode(node: string) {
-      this.$emit("node-selected", node);
-    },
-  },
-  computed: {
-    eventHandlers(): vNG.EventHandlers {
-      return {
-        "node:click": ({ node, event }) => {
-          this.emitNode(node);
-        },
-      };
-    },
-  },
-  data() {
-    return {
-      nodes,
-      edges,
-      layouts,
-      // eventHandlers: this.eventHandlers(),
-    };
-  },
-  components: {
-    VNetworkGraph,
-  },
-});
+/**
+ * 🎯 LEARNING NOTE: Composition API Benefits
+ * 
+ * Compare this to the old class-based component:
+ * ✓ All logic is grouped by feature (nodes, edges, layouts)
+ * ✓ No "this" keyword confusion
+ * ✓ TypeScript auto-complete works perfectly
+ * ✓ Can extract logic into composables if needed
+ * ✓ Easier to test (just functions!)
+ */
 </script>
 
 <style>
@@ -122,9 +179,24 @@ template {
 }
 
 .graph-container {
+  position: relative;
   margin: auto;
   width: 600px;
   height: 400px;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dddddd33;
+  border-radius: 4%;
+  color: #999;
 }
 
 .graph {
@@ -138,6 +210,12 @@ template {
   background-color: #ee7129dd;
   fill: #ee7129dd !important;
   opacity: 1;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.graph-container circle:hover {
+  opacity: 0.8;
 }
 
 .graph-container path {

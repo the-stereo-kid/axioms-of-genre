@@ -21,13 +21,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({
-  props: {},
-})
-export default class Axioms extends Vue {}
+<script setup lang="ts">
+/**
+ * 🎯 COMPOSITION API - Axioms Component
+ * 
+ * Static content component - no logic needed!
+ * This shows how simple components become with Composition API.
+ */
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
