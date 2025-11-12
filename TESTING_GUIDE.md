@@ -397,8 +397,8 @@ Test your app's performance:
 6. [x] Click "House"
 7. [x] Details update smoothly
 8. [x] Check console: No errors
-9. [ ] Check DevTools: Pinia state correct
-10. [ ] Refresh page: Everything reloads
+9. [x] Check DevTools: Pinia state correct
+10. [x] Refresh page: Everything reloads
 
 **If all steps pass: 🎉 You're ready to extend!**
 
@@ -410,9 +410,9 @@ As you add features, test:
 
 ### After Adding Subgenres:
 
-- [ ] Subgenres appear in table
-- [ ] Clicking parent shows subgenres in graph
-- [ ] Edges connect correctly
+- [x] Subgenres appear in table
+- [x] Clicking parent shows subgenres in graph
+- [x] Edges connect correctly
 - [ ] Layout looks good
 
 ### After Adding Elements:
@@ -439,20 +439,20 @@ Copy this for your testing sessions:
 
 ### Basic Tests
 
-- [ ] Supabase connection works
-- [ ] Query functions return data
-- [ ] Pinia store loads data
-- [ ] Graph renders nodes
-- [ ] Node clicks work
-- [ ] Details display correctly
+- [x] Supabase connection works
+- [x] Query functions return data
+- [x] Pinia store loads data
+- [x] Graph renders nodes
+- [x] Node clicks work
+- [x] Details display correctly
 
 ### Your TODOs
 
-- [ ] fetchSubgenres() works
-- [ ] fetchGenreElementsByGenreId() works
-- [ ] Store getters work
-- [ ] Subgenre expansion works
-- [ ] Element display works
+- [x] fetchSubgenres() works
+- [x] fetchGenreElementsByGenreId() works
+- [x] Store getters work
+- [x] Subgenre expansion works
+- [x] Element display works
 
 ### Issues Found:
 
