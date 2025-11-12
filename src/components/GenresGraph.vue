@@ -1,18 +1,22 @@
 <template>
-  <div class="graph-container" ref="graphContainer">
+  <div class="graph-container">
     <!-- Loading state -->
     <div v-if="genreStore.loading.genres" class="loading-overlay">
       <p>Loading genres...</p>
     </div>
 
     <v-network-graph
-      v-else
+      v-else-if="hasGraphData"
       class="graph"
       :nodes="nodes"
       :edges="edges"
       :layouts="layouts"
       :event-handlers="eventHandlers"
     />
+
+    <div v-else class="loading-overlay">
+      <p>loading...</p>
+    </div>
   </div>
 </template>
 
@@ -33,7 +37,7 @@
  * - Layout uses circular positioning
  */
 
-import { ref, computed, watch, onMounted } from "vue";
+import { computed } from "vue";
 import { VNetworkGraph, type Nodes, type Edges, type Layouts } from "v-network-graph";
 import type * as vNG from "v-network-graph";
 import { useGenreStore } from "@/stores/genreStore";
@@ -41,16 +45,13 @@ import { useGenreStore } from "@/stores/genreStore";
 // Get store instance
 const genreStore = useGenreStore();
 
-// DOM reference
-const graphContainer = ref<HTMLElement | null>(null);
-
 /**
  * 🎯 COMPUTED: Dynamic Nodes
  *
  * Builds nodes object from Pinia store data.
  * Nodes include a central node + all root genres
- *
- * TODO: Expand this to include subgenres when a genre is selected
+ * When a genre is selected we also render its direct subgenres (and, if the
+ * selection is a child, we surface its parent for context).
  */
 const nodes = computed<Nodes>(() => {
   const nodeMap: Nodes = {
@@ -65,11 +66,37 @@ const nodes = computed<Nodes>(() => {
     };
   });
 
-  // TODO: If a genre is selected, add its subgenres
-  // Hint: Use genreStore.selectedGenre and getSubgenresByParentId
+  const selected = genreStore.selectedGenre;
+  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
+  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
+
+  if (focusAnchor) {
+    nodeMap[focusAnchor.name] = {
+      name: focusAnchor.name,
+      color: focusAnchor.color || "#ee7129",
+    };
+
+    const directSubgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
+    directSubgenres.forEach((sub) => {
+      nodeMap[sub.name] = {
+        name: sub.name,
+        color: sub.color || "#9c6ef3",
+      };
+    });
+  }
+
+  // Always make sure the actively selected genre is present
+  if (selected) {
+    nodeMap[selected.name] = {
+      name: selected.name,
+      color: selected.color || "#ee7129",
+    };
+  }
 
   return nodeMap;
 });
+
+const hasGraphData = computed(() => Object.keys(nodes.value).length > 1);
 
 /**
  * 🎯 COMPUTED: Dynamic Edges
@@ -81,18 +108,30 @@ const nodes = computed<Nodes>(() => {
  */
 const edges = computed<Edges>(() => {
   const edgeMap: Edges = {};
-  let edgeCount = 0;
+  const makeKey = (source: string, target: string) =>
+    `edge-${source.replace(/\s+/g, "_")}-${target.replace(/\s+/g, "_")}`;
 
   // Connect center to all root genres
   genreStore.rootGenres.forEach((genre) => {
-    edgeMap[`edge${edgeCount++}`] = {
+    edgeMap[makeKey("center", genre.name)] = {
       source: "center",
       target: genre.name,
     };
   });
 
-  // TODO: Add edges from genre_relationships table
-  // genreStore.relationships.forEach(rel => { ... })
+  const selected = genreStore.selectedGenre;
+  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
+  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
+
+  if (focusAnchor) {
+    const directSubgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
+    directSubgenres.forEach((sub) => {
+      edgeMap[makeKey(focusAnchor.name, sub.name)] = {
+        source: focusAnchor.name,
+        target: sub.name,
+      };
+    });
+  }
 
   return edgeMap;
 });
@@ -111,7 +150,7 @@ const layouts = computed<Layouts>(() => {
   };
 
   const rootGenres = genreStore.rootGenres;
-  const angleStep = (2 * Math.PI) / rootGenres.length;
+  const angleStep = rootGenres.length ? (2 * Math.PI) / rootGenres.length : 0;
   const radius = 120;
 
   rootGenres.forEach((genre, index) => {
@@ -122,7 +161,27 @@ const layouts = computed<Layouts>(() => {
     };
   });
 
-  // TODO: Position subgenres in an outer ring or connected to parents
+  const selected = genreStore.selectedGenre;
+  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
+  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
+
+  if (focusAnchor) {
+    const anchorPosition = layoutMap.nodes[focusAnchor.name] || { x: 0, y: 0 };
+    const subgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
+
+    if (subgenres.length) {
+      const subAngleStep = (2 * Math.PI) / subgenres.length;
+      const subRadius = 60;
+
+      subgenres.forEach((sub, index) => {
+        const angle = index * subAngleStep - Math.PI / 2;
+        layoutMap.nodes[sub.name] = {
+          x: anchorPosition.x + Math.cos(angle) * subRadius,
+          y: anchorPosition.y + Math.sin(angle) * subRadius,
+        };
+      });
+    }
+  }
 
   return layoutMap;
 });
@@ -137,11 +196,7 @@ const eventHandlers: vNG.EventHandlers = {
     // Don't select the center node
     if (node === "center") return;
 
-    // Find genre by name and select it in the store
-    const genre = genreStore.genres.find((g) => g.name === node);
-    if (genre) {
-      genreStore.selectGenre(genre.id);
-    }
+    genreStore.selectGenreByName(node);
   },
 
   // TODO: Add hover tooltip showing BPM range and quick info
@@ -156,10 +211,6 @@ const eventHandlers: vNG.EventHandlers = {
 /**
  * Load data when component mounts
  */
-onMounted(() => {
-  genreStore.loadAllData();
-});
-
 /**
  * 🎯 LEARNING NOTE: Composition API Benefits
  *

@@ -6,6 +6,17 @@
   <router-view />
 </template>
 
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useGenreStore } from "@/stores/genreStore";
+
+const genreStore = useGenreStore();
+
+onMounted(() => {
+  genreStore.loadAllData();
+});
+</script>
+
 <style lang="scss">
 /* src/style.css */
 // @tailwind base;

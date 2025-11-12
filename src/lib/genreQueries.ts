@@ -21,6 +21,16 @@ import type {
   GenreRelationship,
 } from "./database.types";
 
+type SubgenreRow = {
+  relationship_type: GenreRelationship["relationship_type"];
+  genres: Genre | null;
+};
+
+export interface SubgenreResult {
+  relationship_type: GenreRelationship["relationship_type"];
+  genre: Genre;
+}
+
 /**
  * Fetch all root genres (main genres like Techno, House, etc.)
  * These will be the first nodes in your graph visualization
@@ -95,15 +105,30 @@ export async function fetchGenreById(id: number): Promise<Genre | null> {
  *
  * Learn about joins: https://supabase.com/docs/guides/database/joins-and-nesting
  */
-export async function fetchSubgenres(parentId: number) {
-  // TODO: Implement this query
-  // const { data, error } = await supabase
-  //   .from('genre_relationships')
-  //   .select('relationship_type, genres!child_genre_id(*)')
-  //   .eq('parent_genre_id', parentId)
+export async function fetchSubgenres(parentId: number): Promise<SubgenreResult[]> {
+  const { data, error } = await supabase
+    .from("genre_relationships")
+    .select<"relationship_type, genres!child_genre_id(*)", SubgenreRow>(
+      "relationship_type, genres!child_genre_id(*)"
+    )
+    .eq("parent_genre_id", parentId)
+    .eq("relationship_type", "subgenre");
 
-  console.warn("TODO: Implement fetchSubgenres()");
-  return [];
+  if (error) {
+    console.error("Error fetching subgenres:", error);
+    return [];
+  }
+
+  if (!data) {
+    return [];
+  }
+
+  return data
+    .filter((row) => row.genres)
+    .map((row: any) => ({
+      relationship_type: row.relationship_type,
+      genre: row.genres as Genre,
+    }));
 }
 
 /**
@@ -124,7 +149,7 @@ export async function fetchGenreRelationships() {
 /**
  * Fetch all genre elements (acid, breakbeat, etc.)
  */
-export async function fetchGenreElements() {
+export async function fetchGenreElements(): Promise<GenreElement[]> {
   const { data, error } = await supabase.from("genre_elements").select("*").order("name");
 
   if (error) {
@@ -147,16 +172,21 @@ export async function fetchGenreElements() {
  *   { element: { name: 'Four-to-floor', description: '...' }, influence_strength: 10 }
  * ]
  */
-export async function fetchGenreElementsByGenreId(genreId: number) {
-  // TODO: Implement this query
-  // const { data, error } = await supabase
-  //   .from('genre_element_relations')
-  //   .select('influence_strength, notes, genre_elements(*)')
-  //   .eq('genre_id', genreId)
-  //   .order('influence_strength', { ascending: false })
+export async function fetchGenreElementsByGenreId(
+  genreId: number
+): Promise<GenreElementRelation[]> {
+  const { data, error } = await supabase
+    .from("genre_element_relations")
+    .select("influence_strength, notes, genre_elements(*)")
+    .eq("genre_id", genreId)
+    .order("influence_strength", { ascending: false });
 
-  console.warn("TODO: Implement fetchGenreElementsByGenreId()");
-  return [];
+  if (error) {
+    console.error("Error fetching genre elements:", error);
+    return [];
+  }
+
+  return data as GenreElementRelation[];
 }
 
 /**

@@ -18,30 +18,60 @@
       <!-- Description -->
       <p class="description">{{ genreStore.selectedGenre.description }}</p>
 
-      <!-- TODO: Genre Elements Section -->
-      <!-- This will show the building blocks of this genre -->
-      <div v-if="genreStore.selectedGenreElements.length > 0" class="elements-section">
+      <!-- Genre Elements Section -->
+      <div v-if="genreElements.length > 0" class="elements-section">
         <h3>Genre Elements</h3>
         <div class="elements-grid">
-          <!-- TODO: Display each element with its influence strength -->
-          <!-- Example structure:
-          <div v-for="elem in genreStore.selectedGenreElements" :key="elem.element_id" class="element-card">
-            <div class="element-name">{{ elem.genre_elements.name }}</div>
-            <div class="influence-bar" :style="{ width: (elem.influence_strength * 10) + '%' }"></div>
-            <span class="influence-value">{{ elem.influence_strength }}/10</span>
+          <div
+            v-for="(element, index) in genreElements"
+            :key="`${element.genre_elements?.id ?? element.genre_elements?.name ?? index}`"
+            class="element-card"
+          >
+            <div class="element-name">
+              {{ element.genre_elements?.name ?? "Element" }}
+            </div>
+            <div class="element-details">
+              <p class="element-description">
+                {{ element.genre_elements?.description ?? "No description yet." }}
+              </p>
+              <div class="influence-row" v-if="element.influence_strength != null">
+                <div
+                  class="influence-bar"
+                  :style="{
+                    width: Math.min(Math.max(element.influence_strength, 0), 10) * 10 + '%',
+                  }"
+                ></div>
+                <span class="influence-value">{{ element.influence_strength }}/10</span>
+              </div>
+            </div>
           </div>
-          -->
-          <p class="todo-note">
-            🎯 TODO: Display genre elements here once you implement fetchGenreElementsByGenreId()
-          </p>
         </div>
       </div>
 
-      <!-- TODO: Related Genres Section -->
-      <!-- Show other genres that are connected to this one -->
+      <!-- Related Genres Section -->
       <div class="related-genres-section">
         <h3>Related Genres</h3>
-        <p class="todo-note">🎯 TODO: Use relationships to show parent/child genres</p>
+        <div v-if="!hasRelatedGenres" class="todo-note">
+          No direct parent or subgenres linked yet. Add relationships to see them here.
+        </div>
+        <div v-else class="related-grid">
+          <div v-if="parentGenres.length" class="related-column">
+            <h4>Parent Genres</h4>
+            <ul>
+              <li v-for="genre in parentGenres" :key="genre.id">
+                {{ genre.name }}
+              </li>
+            </ul>
+          </div>
+          <div v-if="subgenres.length" class="related-column">
+            <h4>Subgenres</h4>
+            <ul>
+              <li v-for="genre in subgenres" :key="genre.id">
+                {{ genre.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -65,10 +95,27 @@
  * Learn more: https://vuejs.org/api/sfc-script-setup.html
  */
 
+import { computed } from "vue";
 import { useGenreStore } from "@/stores/genreStore";
 
 // Get the genre store instance
 const genreStore = useGenreStore();
+
+const genreElements = computed(() => genreStore.selectedGenreElements ?? []);
+
+const subgenres = computed(() => {
+  if (!genreStore.selectedGenre) return [];
+  return genreStore.getSubgenresByParentId(genreStore.selectedGenre.id);
+});
+
+const parentGenres = computed(() => {
+  if (!genreStore.selectedGenre) return [];
+  return genreStore.getParentGenresByChildId(genreStore.selectedGenre.id);
+});
+
+const hasRelatedGenres = computed(() => {
+  return subgenres.value.length + parentGenres.value.length > 0;
+});
 
 /**
  * 🎯 LEARNING NOTE:

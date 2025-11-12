@@ -44,6 +44,8 @@ export const useGenreStore = defineStore("genre", () => {
   // Elements for the selected genre
   const selectedGenreElements = ref<any[]>([]);
 
+  const hasLoaded = ref(false);
+
   // Loading states (for showing spinners)
   const loading = ref({
     genres: false,
@@ -92,10 +94,20 @@ export const useGenreStore = defineStore("genre", () => {
    * getSubgenresByParentId.value(1) // Returns all subgenres of Techno
    */
   const getSubgenresByParentId = computed(() => {
-    return (parentId: number) => {
-      // TODO: Implement this
-      console.warn("TODO: Implement getSubgenresByParentId getter");
-      return [];
+    return (parentId: number): Genre[] => {
+      return relationships.value
+        .filter((rel) => rel.parent_genre_id === parentId && rel.relationship_type === "subgenre")
+        .map((rel) => genres.value.find((g) => g.id === rel.child_genre_id))
+        .filter((g): g is Genre => Boolean(g));
+    };
+  });
+
+  const getParentGenresByChildId = computed(() => {
+    return (childId: number): Genre[] => {
+      return relationships.value
+        .filter((rel) => rel.child_genre_id === childId && rel.relationship_type === "subgenre")
+        .map((rel) => genres.value.find((g) => g.id === rel.parent_genre_id))
+        .filter((g): g is Genre => Boolean(g));
     };
   });
 
@@ -160,7 +172,9 @@ export const useGenreStore = defineStore("genre", () => {
    * Call this in your App.vue or router
    */
   async function loadAllData() {
+    if (hasLoaded.value) return;
     await Promise.all([loadGenres(), loadRelationships(), loadElements()]);
+    hasLoaded.value = true;
   }
 
   /**
@@ -216,8 +230,12 @@ export const useGenreStore = defineStore("genre", () => {
    * HINT: Find the genre in genres array by name, then call selectGenre()
    */
   async function selectGenreByName(name: string) {
-    // TODO: Implement this
-    console.warn("TODO: Implement selectGenreByName action");
+    const genre = genres.value.find((g) => g.name === name);
+    if (genre) {
+      await selectGenre(genre.id);
+    } else {
+      console.warn(`Genre with name "${name}" not found in store.`);
+    }
   }
 
   /**
@@ -247,6 +265,7 @@ export const useGenreStore = defineStore("genre", () => {
     subgenres,
     getGenreById,
     getSubgenresByParentId,
+    getParentGenresByChildId,
 
     // Actions
     loadGenres,

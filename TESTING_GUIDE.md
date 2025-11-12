@@ -389,14 +389,14 @@ Test your app's performance:
 
 **Complete User Flow:**
 
-1. [ ] Navigate to `/visualizer`
-2. [ ] Wait for graph to load (< 1s)
-3. [ ] See 5 genre nodes in circle
-4. [ ] Click "Techno"
-5. [ ] See details appear below
-6. [ ] Click "House"
-7. [ ] Details update smoothly
-8. [ ] Check console: No errors
+1. [x] Navigate to `/visualizer`
+2. [x] Wait for graph to load (< 1s)
+3. [x] See 5 genre nodes in circle
+4. [x] Click "Techno"
+5. [x] See details appear below
+6. [x] Click "House"
+7. [x] Details update smoothly
+8. [x] Check console: No errors
 9. [ ] Check DevTools: Pinia state correct
 10. [ ] Refresh page: Everything reloads
 

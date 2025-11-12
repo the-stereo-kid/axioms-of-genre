@@ -22,10 +22,10 @@ import type { Database } from "./database.types";
 
 // Vite requires VITE_ prefix for env variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
 // Type-safe client with auto-generated types
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
 /**
  * 🎯 LEARNING CHECKPOINT:
