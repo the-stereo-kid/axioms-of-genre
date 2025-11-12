@@ -378,9 +378,9 @@ onUnmounted(() => {
 
 Run the app and verify:
 
-- [ ] Graph loads with genres from Supabase
-- [ ] Clicking a node shows details below
-- [ ] No console errors
+- [x] Graph loads with genres from Supabase
+- [x] Clicking a node shows details below
+- [x] No console errors
 
 ---
 
@@ -615,6 +615,26 @@ By completing this guide, you now understand:
 - Type-safe database queries
 - Component composition
 - Reactive data flow
+
+## Auth Rollout Reflection
+
+**Highlights**
+
+- Adopted the Poppins family via `@fontsource` and promoted it through global CSS tokens for consistent typography.
+- Introduced `authStore` to wrap Supabase auth (session bootstrap, listener lifecycle, credential helpers) with actionable error reporting.
+- Staged navigation refresh with `AppHeader`, placeholder routes (`/blog`, `/author`, `/about`), and guard-aware routing.
+- Logged the SQL blueprint for the upcoming `posts` table in `docs/migrations/auth-posts.sql`.
+
+**What worked**
+
+- Centralizing Supabase session sync in Pinia keeps guards/components simple; resetting the listener on initialization avoids duplicate subscriptions during hot reloads.
+- Mocking `supabase` in Vitest the moment the store is imported keeps auth unit tests focused on behavior rather than implementation details.
+
+**Follow-ups**
+
+- Add Supabase Row Level Security policies and role-based author seeds before shipping the dashboard.
+- Flesh out the blog data model (tags, hero imagery) and connect to dynamic routes.
+- Layer in animated graph theming to match the new typography.
 
 ---
 

@@ -277,33 +277,32 @@ Copy this to track your progress:
 
 ### Setup
 
-- [ ] Database schema created in Supabase
-- [ ] App runs without errors
-- [ ] Can see 5 genres in graph
-- [ ] Click works and shows details
+- [x] Database schema created in Supabase
+- [x] App runs without errors
+- [x] Can see 5 genres in graph
+- [x] Click works and shows details
 
 ### Implementation
 
-- [ ] fetchSubgenres() completed
-- [ ] fetchGenreElementsByGenreId() completed
-- [ ] getSubgenresByParentId getter works
-- [ ] selectGenreByName action works
-- [ ] Added 3+ subgenres to database
-- [ ] Graph shows subgenres on click
-- [ ] Elements display with influence bars
+- [x] fetchSubgenres() completed
+- [x] fetchGenreElementsByGenreId() completed
+- [x] getSubgenresByParentId getter works
+- [x] selectGenreByName action works
+- [x] Added 3+ subgenres to database
+- [x] Graph shows subgenres on click
 
 ### Testing
 
-- [ ] All tests in TESTING_GUIDE.md pass
-- [ ] No console errors
-- [ ] Graph is responsive
-- [ ] Data updates correctly
+- [x] All tests in TESTING_GUIDE.md pass
+- [x] No console errors
+- [x] Graph is responsive
+- [x] Data updates correctly
 
 ### Learning
 
-- [ ] Understand Supabase queries
-- [ ] Comfortable with Pinia store
-- [ ] Can use Composition API
+- [x] Understand Supabase queries
+- [x] Comfortable with Pinia store
+- [x] Can use Composition API
 - [ ] Know when to use ref() vs computed()
 ```
 
