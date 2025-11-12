@@ -1,9 +1,7 @@
 <template>
   <div class="min-h-screen bg-transparent">
     <AppHeader />
-    <div class="pt-20">
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 

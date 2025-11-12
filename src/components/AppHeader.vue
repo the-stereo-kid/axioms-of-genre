@@ -23,7 +23,7 @@
           v-for="item in navigationLinks"
           :key="item.to"
           :to="item.to"
-          class="no-underline text-sm font-bold uppercase tracking-[0.25em] text-gray-400 transition-all duration-300 hover:scale-150 hover:text-white"
+          class="no-underline text-xs font-bold uppercase tracking-[0.25em] text-gray-400 transition-all duration-300 hover:scale-150 hover:text-white"
         >
           {{ item.label }}
         </RouterLink>

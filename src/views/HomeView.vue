@@ -1,51 +1,149 @@
 <template>
-  <main class="mx-auto flex min-h-[70vh] max-w-5xl flex-col gap-12 px-6 py-16 text-left">
-    <header class="space-y-4">
-      <p class="text-sm uppercase tracking-[0.35em] text-gray-400">Home</p>
-      <h1 class="text-4xl font-semibold text-white leading-tight">The Stereo Kid</h1>
-    </header>
-
-    <section class="space-y-8">
-      <div class="hero-image-container">
-        <img src="../assets/dj-photo.jpg" alt="The Stereo Kid DJing" class="hero-image" />
+  <main class="relative">
+    <!-- Full-height hero section -->
+    <section class="hero-section relative flex h-screen w-full overflow-hidden">
+      <!-- Hero image background -->
+      <div class="hero-image-wrapper absolute inset-0">
+        <img :src="profileImageUrl" alt="The Stereo Kid DJing" class="hero-image" />
+        <!-- Dark overlay for text readability -->
+        <div
+          class="hero-overlay absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"
+        ></div>
       </div>
-      <p class="catchphrase text-xl font-medium italic text-[#ff8d48]">
+
+      <!-- Title positioned top left -->
+      <h1
+        class="hero-title absolute left-6 top-24 z-10 flex flex-col items-start text-left text-white sm:left-8 sm:top-28 md:left-12 md:top-32"
+      >
+        <span>THE</span>
+        <span>STEREO</span>
+        <span>KID</span>
+      </h1>
+
+      <!-- Catchphrase positioned bottom right -->
+      <p
+        class="catchphrase absolute bottom-6 right-6 z-10 whitespace-nowrap text-right text-lg font-medium italic text-[#ff8d48] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:bottom-8 sm:right-8 sm:text-xl"
+      >
         I like groovy techno and sharks with lazer beams!
       </p>
-    </section>
 
-    <section class="space-y-4">
-      <h2 class="text-2xl font-semibold text-white">About This Site</h2>
-      <p class="max-w-2xl text-base text-gray-300">
-        Welcome to my digital space where I explore the relationships between electronic music
-        genres through interactive visualization. This is a personal project mapping out my
-        understanding of electronic music, its connections, and how different genres relate to each
-        other.
-      </p>
-      <p class="max-w-2xl text-base text-gray-300">
-        Dive into the visualizer to explore genre connections, check out the blog for deeper
-        insights, or get in touch if you want to book me for an event.
-      </p>
+      <!-- Glassmorphic content card positioned on the left -->
+      <div
+        class="glass-card absolute bottom-10 left-10 z-10 w-full max-w-lg rounded-t-3xl px-8 py-12 sm:px-10 sm:py-16"
+      >
+        <div class="space-y-4 text-left">
+          <h2 class="text-2xl font-semibold text-white">Welcome</h2>
+          <p class="text-base text-gray-300">
+            I explore the relationships between electronic music genres . This is a personal project
+            mapping out my understanding of the connections between subgenres, and how different
+            sounds relate to each other.
+          </p>
+          <p class="text-base text-gray-300">
+            Dive into the visualizer to explore genres according to my axioms, check out the blog
+            for deeper insights, or get in touch if you want to book me for an event.
+          </p>
+        </div>
+      </div>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
-// The Stereo Kid personal brand homepage
+import { getCoverImageUrl } from "@/lib/imageStorage";
+
+// Use Supabase Storage for cover images
+const profileImageUrl = getCoverImageUrl("profile.jpg");
 </script>
 
 <style scoped lang="scss">
-.hero-image-container {
-  max-width: 800px;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+.hero-section {
+  height: 100vh;
+  height: 100dvh; // Dynamic viewport height for mobile
+}
+
+.hero-image-wrapper {
+  width: 100%;
+  height: 100%;
 }
 
 .hero-image {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
+}
+
+.hero-title {
+  font-family: "Press Start 2P", monospace !important;
+  font-size: clamp(0.875rem, 3vw, 2rem);
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px rgba(255, 141, 72, 0.5), 0 0 20px rgba(255, 141, 72, 0.3),
+    2px 2px 0px rgba(0, 0, 0, 0.8), 4px 4px 0px rgba(0, 0, 0, 0.6);
+  animation: pixel-glow 2s ease-in-out infinite alternate;
+
+  span {
+    display: block;
+  }
+}
+
+@keyframes pixel-glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 141, 72, 0.5), 0 0 20px rgba(255, 141, 72, 0.3),
+      2px 2px 0px rgba(0, 0, 0, 0.8), 4px 4px 0px rgba(0, 0, 0, 0.6);
+  }
+  to {
+    text-shadow: 0 0 15px rgba(255, 141, 72, 0.7), 0 0 30px rgba(255, 141, 72, 0.5),
+      2px 2px 0px rgba(0, 0, 0, 0.8), 4px 4px 0px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.catchphrase {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+// Glassmorphic card effect - 10% opacity
+.glass-card {
+  background: rgba(27, 27, 27, 0.33);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+}
+
+// Responsive adjustments for portrait images
+@media (orientation: portrait) {
+  .hero-image {
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+
+// Mobile adjustments
+@media (max-height: 600px) {
+  .hero-title {
+    font-size: clamp(0.75rem, 3vw, 1.5rem);
+    top: 5rem !important;
+    left: 1rem !important;
+  }
+
+  .catchphrase {
+    font-size: 0.875rem;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .glass-card {
+    padding: 1.5rem;
+  }
+}
+
+// Responsive card positioning
+@media (max-width: 640px) {
+  .glass-card {
+    max-width: 100%;
+    border-radius: 1.5rem 1.5rem 0 0;
+    padding: 1.5rem;
+  }
 }
 </style>
