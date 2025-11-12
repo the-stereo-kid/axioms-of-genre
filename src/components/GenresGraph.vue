@@ -232,8 +232,16 @@ template {
 .graph-container {
   position: relative;
   margin: auto;
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   height: 400px;
+  min-height: 300px;
+}
+
+@media (min-width: 640px) {
+  .graph-container {
+    height: 400px;
+  }
 }
 
 .loading-overlay {

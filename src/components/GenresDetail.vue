@@ -129,12 +129,19 @@ const hasRelatedGenres = computed(() => {
 
 <style scoped>
 .detail-container {
-  width: 50%;
+  width: 100%;
+  max-width: 600px;
   margin: 2rem auto;
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   min-height: 300px;
+}
+
+@media (min-width: 768px) {
+  .detail-container {
+    width: 50%;
+  }
 }
 
 .loading,

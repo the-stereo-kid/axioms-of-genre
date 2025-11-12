@@ -4,7 +4,7 @@ import VisualizerView from "../views/VisualizerView.vue"
 import AuthView from "../views/AuthView.vue"
 import BlogListView from "../views/BlogList.vue"
 import AuthorDashboardView from "../views/AuthorDashboard.vue"
-import AboutView from "../views/AboutView.vue"
+import BookingView from "../views/BookingView.vue"
 import { useAuthStore } from "@/stores/authStore"
 
 declare module "vue-router" {
@@ -31,9 +31,9 @@ const routes: Array<RouteRecordRaw> = [
     component: BlogListView
   },
   {
-    path: "/about",
-    name: "about",
-    component: AboutView
+    path: "/booking",
+    name: "booking",
+    component: BookingView
   },
   {
     path: "/backdoor",
