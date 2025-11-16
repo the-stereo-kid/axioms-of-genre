@@ -75,7 +75,7 @@ how much assistance do you need with sound equipment / setup?"
 <script setup lang="ts">
 import { ref } from "vue";
 
-const contactEmail = "ieuan@scout-events.co.za";
+const contactEmail = "ieuan@scoutevents.co.za";
 
 const formData = ref({
   name: "",
