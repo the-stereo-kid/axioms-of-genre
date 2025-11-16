@@ -52,18 +52,20 @@ body {
   line-height: 1.6;
   text-align: center;
 
-  h1,
+  h1 {
+    font-family: "Press Start 2P", monospace;
+    margin-top: 0.4rem;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+
   h2,
   h3 {
     font-family: var(--font-heading);
     font-weight: var(--font-weight-bold);
     letter-spacing: 0.01em;
-  }
-
-  h1 {
-    margin-top: 0.4rem;
-    font-size: 3.5rem;
-    font-weight: 700;
   }
 
   h2 {

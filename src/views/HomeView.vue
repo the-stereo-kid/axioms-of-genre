@@ -13,23 +13,21 @@
 
       <!-- Title positioned top left -->
       <h1
-        class="hero-title absolute left-6 top-24 z-10 flex flex-col items-start text-left text-white sm:left-8 sm:top-28 md:left-12 md:top-32"
+        class="hero-title absolute left-6 top-24 z-10 text-left text-white sm:left-8 sm:top-28 md:left-12 md:top-32"
       >
-        <span>THE</span>
-        <span>STEREO</span>
-        <span>KID</span>
+        THE STEREO KID
       </h1>
 
       <!-- Catchphrase positioned bottom right -->
       <p
-        class="catchphrase absolute bottom-6 right-6 z-10 whitespace-nowrap text-right text-lg font-medium italic text-[#ff8d48] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:bottom-8 sm:right-8 sm:text-xl"
+        class="catchphrase absolute bottom-6 right-6 z-10 whitespace-nowrap text-right text-lg font-medium italic text-[#ff8d48] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:bottom-8 sm:right-8 sm:text-xl md:bottom-12 md:right-12 md:text-2xl"
       >
         I like groovy techno and sharks with lazer beams!
       </p>
 
       <!-- Glassmorphic content card positioned on the left -->
       <div
-        class="glass-card absolute bottom-10 left-10 z-10 w-full max-w-lg rounded-t-3xl px-8 py-12 sm:px-10 sm:py-16"
+        class="glass-card absolute bottom-10 left-10 z-10 w-full max-w-lg rounded-t-3xl px-8 py-12 sm:px-10 sm:py-16 md:bottom-12 md:left-12 md:max-w-xl"
       >
         <div class="space-y-4 text-left">
           <h2 class="text-2xl font-semibold text-white">Welcome</h2>
@@ -75,16 +73,17 @@ const profileImageUrl = getCoverImageUrl("profile.jpg");
 
 .hero-title {
   font-family: "Press Start 2P", monospace !important;
-  font-size: clamp(0.875rem, 3vw, 2rem);
-  line-height: 1.6;
+  /* clamp(min-size, preferred-size, max-size)
+     - min-size: smallest it can be (mobile)
+     - preferred-size: scales with viewport (2.5vw = 2.5% of viewport width)
+     - max-size: largest it can be (desktop)
+     Try adjusting: clamp(1rem, 3vw, 2.5rem) for bigger, or clamp(0.75rem, 2vw, 1.5rem) for smaller */
+  font-size: clamp(1.2rem, 3vw, 2.5rem) !important;
+  line-height: 1.4 !important;
   letter-spacing: 0.1em;
   text-shadow: 0 0 10px rgba(255, 141, 72, 0.5), 0 0 20px rgba(255, 141, 72, 0.3),
     2px 2px 0px rgba(0, 0, 0, 0.8), 4px 4px 0px rgba(0, 0, 0, 0.6);
   animation: pixel-glow 2s ease-in-out infinite alternate;
-
-  span {
-    display: block;
-  }
 }
 
 @keyframes pixel-glow {
@@ -144,6 +143,13 @@ const profileImageUrl = getCoverImageUrl("profile.jpg");
     max-width: 100%;
     border-radius: 1.5rem 1.5rem 0 0;
     padding: 1.5rem;
+  }
+}
+
+// Medium breakpoint adjustments (768px+)
+@media (min-width: 768px) {
+  .glass-card {
+    max-width: 32rem; // xl = 36rem, but keeping it reasonable
   }
 }
 </style>
