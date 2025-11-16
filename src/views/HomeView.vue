@@ -27,15 +27,27 @@
       >
         <div class="space-y-4 px-6 text-left sm:px-8">
           <p class="text-sm leading-relaxed text-gray-200 sm:text-base">
-            I'm a DJ and electronic music enthusiast exploring the relationships between genres
-            through my personal project. When I'm not mapping out musical connections, I'm available
-            for bookings at events, clubs, and parties.
+            <span class="font-bold">Groovy</span><sub>adj.</sub>
+            <span class="text-gray-400">/ˈɡruː.vi/</span> <br />
+            <span class="block pl-4">Funky, infectious, and exciting.</span>
+            <br />
+            <span class="font-bold">Techno</span><sub>n.</sub>
+            <span class="text-gray-400">/ˈtɛk.noʊ/</span> <br />
+            <span class="block pl-4"
+              >A driving energy that pulls the crowd into unity and flow on the dance floor.</span
+            >
+            <br />
+            <span class="font-bold">The Stereo Kid</span><sub>n.</sub>
+            <span class="text-gray-400">/ðə ˈstɛr.i.oʊ kɪd/</span> <br />
+            <span class="block pl-4"
+              >A curator of the beat; one who blends these elements to make you move your feet.
+            </span>
           </p>
           <RouterLink
             to="/booking"
-            class="cta-button inline-block w-full rounded-xl bg-[#ee7129] px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#ff8d48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff8d48] sm:text-base md:w-auto"
+            class="cta-button inline-block w-full no-underline rounded-xl bg-[#ee7129] px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#ff8d48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff8d48] sm:text-base md:w-auto"
           >
-            Book Me for Your Event
+            Request a booking
           </RouterLink>
         </div>
       </div>
