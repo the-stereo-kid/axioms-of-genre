@@ -23,20 +23,20 @@
 
       <!-- Bio card at bottom -->
       <div
-        class="bio-card absolute bottom-0 left-4 right-4 z-10 rounded-t-3xl py-8 sm:left-6 sm:right-6 sm:py-10 md:left-auto md:right-12 md:w-auto md:max-w-lg md:rounded-3xl md:mb-12 lg:max-w-xl lg:right-16 xl:right-24"
+        class="bio-card absolute bottom-0 left-4 right-4 z-10 rounded-t-3xl pt-4 sm:pt-8 pb-8 sm:left-6 sm:right-6 sm:py-10 md:left-auto md:right-12 md:w-auto md:max-w-lg md:rounded-3xl md:mb-12 lg:max-w-xl lg:right-16 xl:right-24"
       >
-        <div class="space-y-4 px-6 text-left sm:px-8">
+        <div class="space-y-2 px-6 text-left sm:space-y-4 sm:px-8">
           <p class="text-sm leading-relaxed text-gray-200 sm:text-base">
             <span class="font-bold">Groovy</span><sub>adj.</sub>
             <span class="text-gray-400">/ˈɡruː.vi/</span> <br />
             <span class="block pl-4">Funky, infectious, and exciting.</span>
-            <br />
+            <br class="hidden sm:block" />
             <span class="font-bold">Techno</span><sub>n.</sub>
             <span class="text-gray-400">/ˈtɛk.noʊ/</span> <br />
             <span class="block pl-4"
               >A driving energy that pulls the crowd into unity and flow on the dance floor.</span
             >
-            <br />
+            <br class="hidden sm:block" />
             <span class="font-bold">The Stereo Kid</span><sub>n.</sub>
             <span class="text-gray-400">/ðə ˈstɛr.i.oʊ kɪd/</span> <br />
             <span class="block pl-4"

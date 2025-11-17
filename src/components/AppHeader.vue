@@ -4,17 +4,16 @@
     class="fixed top-0 left-0 right-0 z-40 border-b border-[#2f2f2f] bg-[#1b1b1b]/95 backdrop-blur transition-transform duration-300 ease-in-out"
     :style="{ transform: isHeaderHidden ? 'translateY(-100%)' : 'translateY(0)' }"
   >
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3 md:py-3">
       <!-- Mobile menu button -->
       <button
-        class="flex h-10 w-10 flex-col items-center justify-center gap-1.5 text-gray-400 transition hover:text-white lg:hidden"
+        class="flex h-6 w-6 flex-col items-center justify-center gap-1.5 text-gray-400 transition hover:text-white lg:hidden"
         type="button"
         @click="toggleMenu"
         aria-label="Toggle navigation"
       >
-        <span class="h-0.5 w-5 bg-gray-400"></span>
-        <span class="h-0.5 w-5 bg-gray-400"></span>
-        <span class="h-0.5 w-5 bg-gray-400"></span>
+        <span class="h-0.5 w-4 bg-gray-400"></span>
+        <span class="h-0.5 w-4 bg-gray-400"></span>
       </button>
 
       <!-- Desktop navigation -->
