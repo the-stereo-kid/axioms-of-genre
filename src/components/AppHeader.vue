@@ -7,13 +7,14 @@
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3 md:py-3">
       <!-- Mobile menu button -->
       <button
-        class="flex h-6 w-6 flex-col items-center justify-center gap-1.5 text-gray-400 transition hover:text-white lg:hidden"
+        class="flex h-6 w-6 flex-col items-center justify-center gap-1 text-gray-400 transition hover:text-white lg:hidden"
         type="button"
         @click="toggleMenu"
         aria-label="Toggle navigation"
       >
-        <span class="h-0.5 w-4 bg-gray-400"></span>
-        <span class="h-0.5 w-4 bg-gray-400"></span>
+        <span class="h-[1.5px] w-4 bg-gray-400"></span>
+        <span class="h-[1.5px] w-4 bg-gray-400"></span>
+        <span class="h-[1.5px] w-4 bg-gray-400"></span>
       </button>
 
       <!-- Desktop navigation -->
