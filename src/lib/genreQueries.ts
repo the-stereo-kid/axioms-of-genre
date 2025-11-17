@@ -38,7 +38,7 @@ export interface SubgenreResult {
 export async function fetchRootGenres() {
   const { data, error } = await supabase
     .from("genres")
-    .select("*")
+    .select("*, soundcloud_links")
     .eq("is_root", true)
     .order("name");
 
@@ -54,7 +54,10 @@ export async function fetchRootGenres() {
  * Fetch all genres (both root and subgenres)
  */
 export async function fetchAllGenres() {
-  const { data, error } = await supabase.from("genres").select("*").order("name");
+  const { data, error } = await supabase
+    .from("genres")
+    .select("*, soundcloud_links")
+    .order("name");
 
   if (error) {
     console.error("Error fetching all genres:", error);
@@ -80,7 +83,11 @@ export async function fetchAllGenres() {
  * - Throwing would require try/catch everywhere
  */
 export async function fetchGenreById(id: number): Promise<Genre | null> {
-  const { data, error } = await supabase.from("genres").select("*").eq("id", id).single(); // .single() expects exactly 1 result
+  const { data, error } = await supabase
+    .from("genres")
+    .select("*, soundcloud_links")
+    .eq("id", id)
+    .single(); // .single() expects exactly 1 result
 
   if (error) {
     console.error(`Error fetching genre ${id}:`, error);

@@ -4,80 +4,78 @@
     <div v-if="genreStore.loading.selectedGenre" class="loading">Loading genre details...</div>
 
     <!-- Genre details -->
-    <div v-else-if="genreStore.selectedGenre" class="genre-detail">
-      <h2 class="genre-title">{{ genreStore.selectedGenre.name }}</h2>
+    <div v-else-if="displayGenre" class="genre-detail">
+      <!-- Dictionary-style definition -->
+      <div class="definition-section">
+        <p class="definition-text">
+          <span class="font-bold">{{ displayGenre.name }}</span
+          ><sub>n.</sub>
+          <span v-if="displayGenre.name === 'Groovy Techno'" class="text-gray-400"
+            >/ˈɡruː.vi ˈtɛk.noʊ/</span
+          >
+          <br />
+          <span class="block pl-4">{{ displayGenre.description }}</span>
+        </p>
+      </div>
 
       <!-- BPM Range -->
       <div class="bpm-range">
         <span class="label">BPM Range:</span>
-        <span class="value">
-          {{ genreStore.selectedGenre.bpm_min }} - {{ genreStore.selectedGenre.bpm_max }}
-        </span>
+        <span class="value"> {{ displayGenre.bpm_min }} - {{ displayGenre.bpm_max }} </span>
       </div>
 
-      <!-- Description -->
-      <p class="description">{{ genreStore.selectedGenre.description }}</p>
-
       <!-- Genre Elements Section -->
-      <div v-if="genreElements.length > 0" class="elements-section">
-        <h3>Genre Elements</h3>
-        <div class="elements-grid">
-          <div
-            v-for="(element, index) in genreElements"
+      <div v-if="sortedElements.length > 0" class="elements-section">
+        <h3>Elements</h3>
+        <ul class="elements-list">
+          <li
+            v-for="(element, index) in sortedElements"
             :key="`${element.genre_elements?.id ?? element.genre_elements?.name ?? index}`"
-            class="element-card"
+            class="element-item"
           >
             <div class="element-name">
               {{ element.genre_elements?.name ?? "Element" }}
             </div>
-            <div class="element-details">
-              <p class="element-description">
-                {{ element.genre_elements?.description ?? "No description yet." }}
-              </p>
-              <div class="influence-row" v-if="element.influence_strength != null">
-                <div
-                  class="influence-bar"
-                  :style="{
-                    width: Math.min(Math.max(element.influence_strength, 0), 10) * 10 + '%',
-                  }"
-                ></div>
-                <span class="influence-value">{{ element.influence_strength }}/10</span>
-              </div>
-            </div>
+            <p class="element-description">
+              {{ element.genre_elements?.description ?? "No description yet." }}
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SoundCloud Section -->
+      <div v-if="soundcloudLinks.length > 0" class="soundcloud-section">
+        <h3>SoundCloud</h3>
+        <div class="soundcloud-content">
+          <!-- Embedded tracks -->
+          <div
+            v-for="(link, index) in trackLinks"
+            :key="`track-${index}`"
+            class="soundcloud-embed-wrapper"
+          >
+            <iframe
+              :src="getSoundCloudEmbedUrl(link)"
+              :title="`SoundCloud track ${index + 1}`"
+              class="soundcloud-embed"
+              allow="autoplay"
+              frameborder="0"
+            ></iframe>
+          </div>
+          <!-- Clickable playlists/profiles -->
+          <div v-if="playlistLinks.length > 0" class="soundcloud-links">
+            <a
+              v-for="(link, index) in playlistLinks"
+              :key="`playlist-${index}`"
+              :href="link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="soundcloud-link"
+            >
+              View Playlist {{ index + 1 > 1 ? index + 1 : "" }} on SoundCloud
+            </a>
           </div>
         </div>
       </div>
-
-      <!-- Related Genres Section -->
-      <div class="related-genres-section">
-        <h3>Related Genres</h3>
-        <div v-if="!hasRelatedGenres" class="todo-note">
-          No direct parent or subgenres linked yet. Add relationships to see them here.
-        </div>
-        <div v-else class="related-grid">
-          <div v-if="parentGenres.length" class="related-column">
-            <h4>Parent Genres</h4>
-            <ul>
-              <li v-for="genre in parentGenres" :key="genre.id">
-                {{ genre.name }}
-              </li>
-            </ul>
-          </div>
-          <div v-if="subgenres.length" class="related-column">
-            <h4>Subgenres</h4>
-            <ul>
-              <li v-for="genre in subgenres" :key="genre.id">
-                {{ genre.name }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty state -->
-    <div v-else class="empty-state">
-      <p>Click on a genre node to see details</p>
     </div>
   </div>
 </template>
@@ -86,45 +84,60 @@
 /**
  * 🎯 COMPOSITION API - GenresDetail Component
  *
- * KEY CONCEPTS:
- * - <script setup>: Simplified syntax, no need for export default
- * - No props definition needed, use defineProps() if you have props
- * - Direct access to store via useGenreStore()
- * - Template has direct access to store without "this."
- *
- * Learn more: https://vuejs.org/api/sfc-script-setup.html
+ * Shows genre details with dictionary-style definitions, elements, and SoundCloud embeds.
+ * Defaults to showing "Groovy Techno" when no genre is selected.
  */
 
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useGenreStore } from "@/stores/genreStore";
+import { isSoundCloudTrack, getSoundCloudEmbedUrl } from "@/lib/soundcloudUtils";
+import type { Genre } from "@/lib/database.types";
 
 // Get the genre store instance
 const genreStore = useGenreStore();
 
+// Load Groovy Techno by default on mount if nothing is selected
+onMounted(async () => {
+  if (!genreStore.selectedGenre) {
+    const groovyTechno = genreStore.genres.find((g) => g.name === "Groovy Techno");
+    if (groovyTechno) {
+      await genreStore.selectGenre(groovyTechno.id);
+    }
+  }
+});
+
+// Display the selected genre or Groovy Techno as default
+const displayGenre = computed<Genre | null>(() => {
+  if (genreStore.selectedGenre) {
+    return genreStore.selectedGenre;
+  }
+  // Fallback to Groovy Techno if nothing selected
+  return genreStore.genres.find((g) => g.name === "Groovy Techno") ?? null;
+});
+
+// Get genre elements sorted by influence strength (highest to lowest)
 const genreElements = computed(() => genreStore.selectedGenreElements ?? []);
 
-const subgenres = computed(() => {
-  if (!genreStore.selectedGenre) return [];
-  return genreStore.getSubgenresByParentId(genreStore.selectedGenre.id);
+const sortedElements = computed(() => {
+  return [...genreElements.value].sort((a, b) => {
+    const aStrength = a.influence_strength ?? 0;
+    const bStrength = b.influence_strength ?? 0;
+    return bStrength - aStrength; // Descending order
+  });
 });
 
-const parentGenres = computed(() => {
-  if (!genreStore.selectedGenre) return [];
-  return genreStore.getParentGenresByChildId(genreStore.selectedGenre.id);
+// Separate SoundCloud links into tracks (embeddable) and playlists (links)
+const soundcloudLinks = computed(() => {
+  return displayGenre.value?.soundcloud_links ?? [];
 });
 
-const hasRelatedGenres = computed(() => {
-  return subgenres.value.length + parentGenres.value.length > 0;
+const trackLinks = computed(() => {
+  return soundcloudLinks.value.filter((link) => isSoundCloudTrack(link));
 });
 
-/**
- * 🎯 LEARNING NOTE:
- * Notice how much simpler this is than the class-based component!
- * - No "this" keyword
- * - No Options API ceremony (data, methods, computed)
- * - Store data is directly reactive in the template
- * - TypeScript works perfectly with auto-completion
- */
+const playlistLinks = computed(() => {
+  return soundcloudLinks.value.filter((link) => !isSoundCloudTrack(link));
+});
 </script>
 
 <style scoped>
@@ -132,15 +145,16 @@ const hasRelatedGenres = computed(() => {
   width: 100%;
   max-width: 600px;
   margin: 2rem auto;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  padding: 1rem;
+  background: rgba(221, 221, 221, 0.2);
+  border-radius: 4%;
   min-height: 300px;
+  box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .detail-container {
-    width: 50%;
+    padding: 1.5rem;
   }
 }
 
@@ -166,15 +180,52 @@ const hasRelatedGenres = computed(() => {
   }
 }
 
-.genre-title {
-  color: #ee7129;
-  margin-bottom: 1rem;
-  font-size: 2.5rem;
+/* Dictionary-style definition matching hero banner */
+.definition-section {
+  margin-bottom: 2rem;
+}
+
+.definition-text {
+  line-height: 1.8;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.definition-text .font-bold {
+  font-weight: bold;
+  color: #fff;
+}
+
+.definition-text sub {
+  font-size: 0.75em;
+  vertical-align: baseline;
+  color: #999;
+  margin-left: 0.25rem;
+}
+
+.definition-text .text-gray-400 {
+  color: #999;
+  margin-left: 0.5rem;
+}
+
+.definition-text .block {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.definition-text .pl-4 {
+  padding-left: 1rem;
 }
 
 .bpm-range {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+@media (min-width: 640px) {
+  .bpm-range {
+    font-size: 1.2rem;
+  }
 }
 
 .label {
@@ -188,65 +239,120 @@ const hasRelatedGenres = computed(() => {
   font-family: "Courier New", monospace;
 }
 
-.description {
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  color: #ccc;
-}
-
-/* TODO Styles */
-.elements-section,
-.related-genres-section {
+/* Elements section */
+.elements-section {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.elements-section h3,
-.related-genres-section h3 {
+.elements-section h3 {
   color: #ee7129;
   margin-bottom: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
-.todo-note {
-  color: #666;
-  font-style: italic;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-left: 3px solid #ee7129;
-  margin: 1rem 0;
+@media (min-width: 640px) {
+  .elements-section h3 {
+    font-size: 1.5rem;
+  }
 }
 
-/* Element card styles (for when you implement it) */
-.elements-grid {
-  display: grid;
+.elements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
-.element-card {
+.element-item {
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .element-name {
-  flex: 0 0 150px;
   font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
-.influence-bar {
-  height: 8px;
-  background: linear-gradient(90deg, #ee7129, #ff9e64);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-}
-
-.influence-value {
-  color: #999;
+.element-description {
+  color: #ccc;
+  line-height: 1.6;
+  margin: 0;
   font-size: 0.9rem;
+}
+
+/* SoundCloud section */
+.soundcloud-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.soundcloud-section h3 {
+  color: #ee7129;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .soundcloud-section h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.soundcloud-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.soundcloud-embed-wrapper {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.soundcloud-embed {
+  width: 100%;
+  height: 166px;
+  border-radius: 4px;
+}
+
+@media (min-width: 640px) {
+  .soundcloud-embed {
+    height: 300px;
+  }
+}
+
+.soundcloud-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.soundcloud-link {
+  color: #ee7129;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(238, 113, 41, 0.3);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.soundcloud-link:hover {
+  background: rgba(238, 113, 41, 0.1);
+  border-color: #ee7129;
+  color: #ff8d48;
+}
+
+.soundcloud-link:active {
+  transform: translateY(1px);
 }
 </style>

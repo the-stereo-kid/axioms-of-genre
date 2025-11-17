@@ -12,6 +12,7 @@
       :edges="edges"
       :layouts="layouts"
       :event-handlers="eventHandlers"
+      :config="graphConfig"
     />
 
     <div v-else class="loading-overlay">
@@ -24,7 +25,7 @@
 /**
  * 🎯 COMPOSITION API - GenresGraph Component
  *
- * This component builds a network graph from Supabase data dynamically.
+ * This component builds a network graph centered on "Groovy Techno" with its subgenres.
  *
  * KEY CONCEPTS:
  * - ref() for DOM references
@@ -32,8 +33,8 @@
  * - Watchers to rebuild graph when store data changes
  *
  * GRAPH STRUCTURE:
- * - Central node (empty) connects to all root genres
- * - Root genres can expand to show subgenres (TODO for you!)
+ * - Groovy Techno at the center
+ * - Subgenres arranged in a circle around it
  * - Layout uses circular positioning
  */
 
@@ -45,93 +46,88 @@ import { useGenreStore } from "@/stores/genreStore";
 // Get store instance
 const genreStore = useGenreStore();
 
+// Detect if device is touch-enabled
+const isTouchDevice = computed(() => {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+});
+
+// Graph config: disable pan/zoom on touch devices to prevent interference with page scrolling
+const graphConfig = computed(() => {
+  if (isTouchDevice.value) {
+    return {
+      pan: {
+        enabled: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+    };
+  }
+  return {};
+});
+
 /**
  * 🎯 COMPUTED: Dynamic Nodes
  *
- * Builds nodes object from Pinia store data.
- * Nodes include a central node + all root genres
- * When a genre is selected we also render its direct subgenres (and, if the
- * selection is a child, we surface its parent for context).
+ * Builds nodes object centered on "Groovy Techno" with its subgenres.
+ * Only shows Groovy Techno and its direct subgenres.
  */
+const groovyTechno = computed(() => {
+  return genreStore.genres.find((g) => g.name === "Groovy Techno");
+});
+
 const nodes = computed<Nodes>(() => {
-  const nodeMap: Nodes = {
-    center: { name: "" }, // Central node
+  const nodeMap: Nodes = {};
+
+  // If Groovy Techno not found yet, return empty map
+  if (!groovyTechno.value) {
+    return nodeMap;
+  }
+
+  // Add Groovy Techno as the central node
+  nodeMap[groovyTechno.value.name] = {
+    name: groovyTechno.value.name,
+    color: groovyTechno.value.color || "#ee7129",
   };
 
-  // Add all root genres
-  genreStore.rootGenres.forEach((genre) => {
-    nodeMap[genre.name] = {
-      name: genre.name,
-      color: genre.color || "#ee7129",
+  // Get subgenres of Groovy Techno
+  const subgenres = genreStore.getSubgenresByParentId(groovyTechno.value.id);
+  subgenres.forEach((sub) => {
+    nodeMap[sub.name] = {
+      name: sub.name,
+      color: sub.color || "#9c6ef3",
     };
   });
-
-  const selected = genreStore.selectedGenre;
-  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
-  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
-
-  if (focusAnchor) {
-    nodeMap[focusAnchor.name] = {
-      name: focusAnchor.name,
-      color: focusAnchor.color || "#ee7129",
-    };
-
-    const directSubgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
-    directSubgenres.forEach((sub) => {
-      nodeMap[sub.name] = {
-        name: sub.name,
-        color: sub.color || "#9c6ef3",
-      };
-    });
-  }
-
-  // Always make sure the actively selected genre is present
-  if (selected) {
-    nodeMap[selected.name] = {
-      name: selected.name,
-      color: selected.color || "#ee7129",
-    };
-  }
 
   return nodeMap;
 });
 
-const hasGraphData = computed(() => Object.keys(nodes.value).length > 1);
+const hasGraphData = computed(() => {
+  return groovyTechno.value != null && Object.keys(nodes.value).length > 0;
+});
 
 /**
  * 🎯 COMPUTED: Dynamic Edges
  *
- * Creates connections between nodes.
- * Currently connects center to all root genres.
- *
- * TODO: Add edges for genre relationships (subgenres, influences, etc.)
+ * Creates connections from Groovy Techno to its subgenres.
  */
 const edges = computed<Edges>(() => {
   const edgeMap: Edges = {};
   const makeKey = (source: string, target: string) =>
     `edge-${source.replace(/\s+/g, "_")}-${target.replace(/\s+/g, "_")}`;
 
-  // Connect center to all root genres
-  genreStore.rootGenres.forEach((genre) => {
-    edgeMap[makeKey("center", genre.name)] = {
-      source: "center",
-      target: genre.name,
+  if (!groovyTechno.value) {
+    return edgeMap;
+  }
+
+  // Connect Groovy Techno to its subgenres
+  const subgenres = genreStore.getSubgenresByParentId(groovyTechno.value.id);
+  subgenres.forEach((sub) => {
+    edgeMap[makeKey(groovyTechno.value!.name, sub.name)] = {
+      source: groovyTechno.value!.name,
+      target: sub.name,
     };
   });
-
-  const selected = genreStore.selectedGenre;
-  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
-  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
-
-  if (focusAnchor) {
-    const directSubgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
-    directSubgenres.forEach((sub) => {
-      edgeMap[makeKey(focusAnchor.name, sub.name)] = {
-        source: focusAnchor.name,
-        target: sub.name,
-      };
-    });
-  }
 
   return edgeMap;
 });
@@ -139,48 +135,35 @@ const edges = computed<Edges>(() => {
 /**
  * 🎯 COMPUTED: Dynamic Layouts
  *
- * Positions nodes in a circular pattern around the center.
+ * Positions Groovy Techno at center and subgenres in a circular pattern around it.
  * Uses trigonometry for circular arrangement!
  */
 const layouts = computed<Layouts>(() => {
   const layoutMap: Layouts = {
-    nodes: {
-      center: { x: 0, y: 0 },
-    },
+    nodes: {},
   };
 
-  const rootGenres = genreStore.rootGenres;
-  const angleStep = rootGenres.length ? (2 * Math.PI) / rootGenres.length : 0;
-  const radius = 120;
+  if (!groovyTechno.value) {
+    return layoutMap;
+  }
 
-  rootGenres.forEach((genre, index) => {
-    const angle = index * angleStep - Math.PI / 2; // Start at top
-    layoutMap.nodes[genre.name] = {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-    };
-  });
+  // Position Groovy Techno at center
+  layoutMap.nodes[groovyTechno.value.name] = { x: 0, y: 0 };
 
-  const selected = genreStore.selectedGenre;
-  const parentGenres = selected?.id != null ? genreStore.getParentGenresByChildId(selected.id) : [];
-  const focusAnchor = selected && selected.is_root ? selected : parentGenres[0] ?? selected;
+  // Position subgenres in a circle around Groovy Techno
+  const subgenres = genreStore.getSubgenresByParentId(groovyTechno.value.id);
 
-  if (focusAnchor) {
-    const anchorPosition = layoutMap.nodes[focusAnchor.name] || { x: 0, y: 0 };
-    const subgenres = genreStore.getSubgenresByParentId(focusAnchor.id);
+  if (subgenres.length) {
+    const angleStep = (2 * Math.PI) / subgenres.length;
+    const radius = 120; // Distance from center
 
-    if (subgenres.length) {
-      const subAngleStep = (2 * Math.PI) / subgenres.length;
-      const subRadius = 60;
-
-      subgenres.forEach((sub, index) => {
-        const angle = index * subAngleStep - Math.PI / 2;
-        layoutMap.nodes[sub.name] = {
-          x: anchorPosition.x + Math.cos(angle) * subRadius,
-          y: anchorPosition.y + Math.sin(angle) * subRadius,
-        };
-      });
-    }
+    subgenres.forEach((sub, index) => {
+      const angle = index * angleStep - Math.PI / 2; // Start at top
+      layoutMap.nodes[sub.name] = {
+        x: Math.cos(angle) * radius,
+        y: Math.sin(angle) * radius,
+      };
+    });
   }
 
   return layoutMap;
@@ -190,12 +173,10 @@ const layouts = computed<Layouts>(() => {
  * 🎯 EVENT HANDLERS
  *
  * Handle node clicks to select genres and show details
+ * Allow clicking Groovy Techno (the center node) to show its details
  */
 const eventHandlers: vNG.EventHandlers = {
   "node:click": ({ node }) => {
-    // Don't select the center node
-    if (node === "center") return;
-
     genreStore.selectGenreByName(node);
   },
 
@@ -263,6 +244,13 @@ template {
   height: 100%;
   background: #dddddd33;
   border-radius: 4%;
+}
+
+@media (pointer: coarse) {
+  /* On touch devices, prevent panning/zooming gestures but allow taps/clicks */
+  .graph {
+    touch-action: manipulation;
+  }
 }
 
 .graph-container circle {

@@ -19,6 +19,7 @@ export interface Genre {
   description: string;
   color?: string;
   is_root: boolean; // True for main genres, false for subgenres
+  soundcloud_links?: string[]; // Array of SoundCloud URLs (tracks, playlists, profiles)
   created_at?: string;
 }
 
