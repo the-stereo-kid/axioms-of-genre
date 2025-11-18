@@ -55,7 +55,7 @@
 
     <!-- Feature Cards Section - Below Hero -->
     <section
-      class="feature-cards-section bg-[#1b1b1b] px-4 pt-8 pb-4 sm:px-6 sm:py-10 md:px-12 md:py-12"
+      class="feature-cards-section bg-[#1b1b1b] px-4 pt-8 pb-4 sm:px-6 sm:pt-10 sm:pb-6 md:px-12 md:pt-12 md:pb-10"
     >
       <div class="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:gap-8">
         <!-- Axioms of Genre Card -->
@@ -96,7 +96,9 @@
     </section>
 
     <!-- Pinned Indie Dance Content Section -->
-    <section class="pinned-content-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8">
+    <section
+      class="pinned-content-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:pt-8 md:pb-6"
+    >
       <div class="mx-auto max-w-6xl">
         <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
           <div class="space-y-6 text-left">
@@ -131,7 +133,7 @@
     </section>
 
     <!-- About Me Section -->
-    <section class="about-services-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8">
+    <section class="about-services-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-6">
       <div class="mx-auto max-w-6xl">
         <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
           <div class="space-y-6 text-left">
@@ -175,7 +177,7 @@
 
     <!-- Community & Journey Section -->
     <section
-      class="community-journey-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8"
+      class="community-journey-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-6"
     >
       <div class="mx-auto max-w-6xl">
         <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
@@ -219,7 +221,7 @@
 
     <!-- Calendar Coming Soon Announcement -->
     <section
-      class="calendar-announcement-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8"
+      class="calendar-announcement-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-6"
     >
       <div class="mx-auto max-w-6xl">
         <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
