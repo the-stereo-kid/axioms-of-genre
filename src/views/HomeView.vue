@@ -55,7 +55,7 @@
 
     <!-- Feature Cards Section - Below Hero -->
     <section
-      class="feature-cards-section bg-[#1b1b1b] px-4 py-12 sm:px-6 sm:py-16 md:px-12 md:py-20"
+      class="feature-cards-section bg-[#1b1b1b] px-4 pt-8 pb-4 sm:px-6 sm:py-10 md:px-12 md:py-12"
     >
       <div class="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:gap-8">
         <!-- Axioms of Genre Card -->
@@ -94,15 +94,160 @@
         </div>
       </div>
     </section>
+
+    <!-- Pinned Indie Dance Content Section -->
+    <section class="pinned-content-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+          <div class="space-y-6 text-left">
+            <!-- Dictionary-style definition -->
+            <h2 class="text-xl font-semibold text-white sm:text-2xl">Vibe of the Week</h2>
+            <div class="definition-section">
+              <p class="text-sm leading-relaxed text-gray-200 sm:text-base">
+                <span class="font-bold">Indie Dance</span><sub>n.</sub>
+                <span class="text-gray-400">/ˈɪn.di dæns/</span> <br />
+                <span class="block pl-4 mt-2"
+                  >A blend of rock and roll energy with driving bass lines, catchy hooks, and
+                  organic instrumentation that makes it impossible not to move. Indie Dance has
+                  become my flagship genre for throwing down. Especially mixed in and out of other
+                  genres here and there to keep everyone entertained.</span
+                >
+              </p>
+            </div>
+
+            <!-- SoundCloud Embed -->
+            <div v-if="pinnedIndieDanceUrl" class="soundcloud-embed-wrapper">
+              <iframe
+                :src="getSoundCloudEmbedUrl(pinnedIndieDanceUrl)"
+                title="Pinned Indie Dance Set"
+                class="soundcloud-embed"
+                allow="autoplay"
+                frameborder="0"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section class="about-services-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+          <div class="space-y-6 text-left">
+            <h2 class="text-xl font-semibold text-white sm:text-2xl">About Me</h2>
+            <div class="space-y-4 text-sm leading-relaxed text-gray-300 sm:text-base">
+              <p>
+                I'm a software developer by day, working at a education technology startup called
+                <a
+                  href="https://www.thetraverse.co"
+                  class="text-orange-500 hover:text-purple-600 no-underline"
+                  target="_blank"
+                  rel="noopener"
+                  >Traverse</a
+                >, with a bunch of other cool projects on the side. This site is all coded and
+                maintained by me, so keep an eye out for
+                <a
+                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  class="text-orange-500 hover:text-purple-600 no-underline"
+                  target="_blank"
+                  rel="noopener"
+                  >easter eggs</a
+                >.
+              </p>
+              <p>
+                Beyond tunes, I am involved with a bunch of other communities. Through Brothers
+                Rising, I co-host and facilitate menswork groups creating spaces for authentic
+                connection and personal growth. I also guide breathwork sessions and handstand
+                workshops, sharing movement practices that build strength, balance, and presence.
+              </p>
+              <p>
+                My outdoor activities mainly consist of rock climbing (gym bouldering and outdoor
+                sport climbing), highlining, surfing and yoga. These activities help me find balance
+                and flow, but most importantly they bring me into community where I can share the
+                stoke for life.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & Journey Section -->
+    <section
+      class="community-journey-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8"
+    >
+      <div class="mx-auto max-w-6xl">
+        <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+          <div class="space-y-6 text-left">
+            <h2 class="text-xl font-semibold text-white sm:text-2xl">Community & Journey</h2>
+            <div class="space-y-4 text-sm leading-relaxed text-gray-300 sm:text-base">
+              <p>
+                The Homebrew collective is my little brain child that kicked off a lot of the growth
+                that grought me to where I am today. It all started with Homebrew and
+                Minibrew—festivals I hosted with mates for mates years ago. These gatherings became
+                the foundation for a community built on wild house parties, epic Scout jolls and
+                many other intimate events alike, etc etc
+              </p>
+              <!-- <p>
+                Over the years  playing B2B sets alongside incredible crew
+                members like <strong class="text-white">The Groove Dr</strong>,
+                <strong class="text-white">Beef Stu</strong>, and
+                <strong class="text-white">Choppie</strong>. We brought
+                <strong class="text-white">Dirty Habits crew</strong> and
+                <strong class="text-white">Los Jetsons</strong> into the mix at our parties,
+                creating nights where different sounds and communities would collide in the best way
+                possible.
+              </p> -->
+              <p>
+                My journey has taken me behind the decks at some of my favourite spots like Kong,
+                and Hudsons, Dimples Dumplings. I've played in Rocklands, at Gallery Openings and
+                Beach Birthdays. From Jerry's beach bar to The Goat House for New Year's in Kenton.
+              </p>
+              <!-- <p>
+                Beyond the Homebrew collective, I've been involved with
+                <strong class="text-white">Face Jackson the band</strong> and had the pleasure of
+                performing at <strong class="text-white">Funky Bazaar</strong> multiple times. Each
+                collaboration, each party, each venue has been part of building a community around
+                the music we love and the connections we make on the dance floor.
+              </p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar Coming Soon Announcement -->
+    <section
+      class="calendar-announcement-section bg-[#1b1b1b] px-4 py-4 sm:px-6 sm:py-6 md:px-12 md:py-8"
+    >
+      <div class="mx-auto max-w-6xl">
+        <div class="feature-card rounded-3xl px-6 py-8 sm:px-8 sm:py-10">
+          <div class="space-y-4 text-left">
+            <h2 class="text-xl font-semibold text-white sm:text-2xl">Calendar</h2>
+            <p class="text-sm leading-relaxed text-gray-300 sm:text-base">
+              calendar feature coming soon. I'll post upcoming gigs, events, and where you can find
+              me or other groovy events.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { getCoverImageUrl } from "@/lib/imageStorage";
+import { getSoundCloudEmbedUrl } from "@/lib/soundcloudUtils";
 
 // Use Supabase Storage for cover images
 const profileImageUrl = getCoverImageUrl("profile.jpg");
+
+// Pinned Indie Dance SoundCloud URL - update this with your actual set URL
+// For now, using a placeholder - you can replace this with your actual SoundCloud track URL
+const pinnedIndieDanceUrl =
+  "https://soundcloud.com/ieuan-uys/albert-st?si=ec407d3912a94669a358becd7bed544f&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"; // Example: "https://soundcloud.com/yourusername/indie-dance-set"
 </script>
 
 <style scoped lang="scss">
@@ -202,6 +347,59 @@ const profileImageUrl = getCoverImageUrl("profile.jpg");
 
   &:active {
     transform: translateY(0);
+  }
+}
+
+// Dictionary-style definition section (matching hero bio card and GenresDetail)
+.definition-section {
+  margin-bottom: 0;
+
+  p {
+    line-height: 1.8;
+  }
+
+  .font-bold {
+    font-weight: bold;
+    color: #fff;
+  }
+
+  sub {
+    font-size: 0.75em;
+    vertical-align: baseline;
+    color: #999;
+    margin-left: 0.25rem;
+  }
+
+  .text-gray-400 {
+    color: #999;
+    margin-left: 0.5rem;
+  }
+
+  .block {
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .pl-4 {
+    padding-left: 1rem;
+  }
+}
+
+// SoundCloud embed styling (matching GenresDetail)
+.soundcloud-embed-wrapper {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.soundcloud-embed {
+  width: 100%;
+  height: 166px;
+  border-radius: 4px;
+}
+
+@media (min-width: 640px) {
+  .soundcloud-embed {
+    height: 300px;
   }
 }
 
