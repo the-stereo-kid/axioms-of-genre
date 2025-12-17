@@ -50,6 +50,30 @@ export interface GenreRelationship {
   created_at?: string;
 }
 
+// Calendar events for DJ sets and gigs
+export interface Event {
+  id: string; // UUID
+  event_name: string;
+  event_description?: string;
+  date: string; // Date string (YYYY-MM-DD)
+  start_time?: string; // Time string (HH:MM:SS)
+  end_time?: string; // Time string (HH:MM:SS)
+  set_description?: string;
+  venue?: string;
+  venue_address?: string;
+  event_link?: string; // URL to event page/tickets
+  cover_image?: string; // URL to cover image
+  status?: "confirmed" | "tentative" | "cancelled";
+  genre_ids?: number[]; // Array of genre IDs referencing genres table
+  created_at?: string;
+  updated_at?: string;
+}
+
+// Event with populated genres (for display)
+export interface EventWithGenres extends Event {
+  genres?: Genre[]; // Populated genre objects
+}
+
 // Supabase Database type (used for type-safe queries)
 export interface Database {
   public: {
@@ -73,6 +97,11 @@ export interface Database {
         Row: GenreRelationship;
         Insert: Omit<GenreRelationship, "id" | "created_at">;
         Update: Partial<Omit<GenreRelationship, "id" | "created_at">>;
+      };
+      events: {
+        Row: Event;
+        Insert: Omit<Event, "id" | "created_at" | "updated_at">;
+        Update: Partial<Omit<Event, "id" | "created_at" | "updated_at">>;
       };
     };
   };

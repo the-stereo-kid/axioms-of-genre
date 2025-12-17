@@ -17,6 +17,7 @@
     "d3": "^7.8.5",
     "json-server": "^0.17.4",
     "pinia": "^3.0.4",
+    "vue3-carousel": "^0.3.3",
     "v-network-graph": "^0.9.13",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
