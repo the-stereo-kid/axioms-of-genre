@@ -1,18 +1,20 @@
 <template>
-  <div class="flex w-full flex-col">
+  <div class="flex w-fit flex-col">
     <!-- Month Header - Compact -->
     <div class="mb-4 flex items-start justify-between">
       <h3 class="m-0 text-sm font-semibold uppercase text-white">{{ currentMonthYear }}</h3>
       <div class="flex gap-2">
         <button
-          class="rounded-md bg-white/10 px-2 py-1 text-xs text-white transition hover:bg-white/20"
+          class="rounded-md bg-black/20 backdrop-blur-sm border border-gray/10 px-2 py-1 text-xs text-white transition hover:bg-black/70"
+          style="box-shadow: 0 0 8px rgba(100, 100, 100, 0.2)"
           @click="scrollUp"
           aria-label="Previous weeks"
         >
           ↑
         </button>
         <button
-          class="rounded-md bg-white/10 px-2 py-1 text-xs text-white transition hover:bg-white/20"
+          class="rounded-md bg-black/20 backdrop-blur-sm border border-gray/10 px-2 py-1 text-xs text-white transition hover:bg-black/70"
+          style="box-shadow: 0 0 8px rgba(100, 100, 100, 0.2)"
           @click="scrollDown"
           aria-label="Next weeks"
         >
@@ -33,12 +35,12 @@
     </div>
 
     <!-- Weeks Container - Only 4 rows -->
-    <div class="grid grid-cols-7 gap-2">
+    <div class="grid grid-cols-7 gap-1">
       <button
         v-for="day in visibleDays"
         :key="`day-${day.date}`"
         :class="[
-          'relative flex aspect-square items-center justify-center rounded text-sm font-medium transition-all',
+          'relative flex aspect-square items-center justify-center rounded text-sm font-medium transition-all w-[30px]',
           day.hasEvent
             ? 'bg-[#ff8d48]/20 text-white border border-[#ff8d48]/40 hover:bg-[#ff8d48]/30'
             : 'text-gray-400 hover:bg-white/5',
@@ -50,10 +52,6 @@
         :disabled="!day.hasEvent"
       >
         <span>{{ day.dayNumber }}</span>
-        <span
-          v-if="day.hasEvent"
-          class="absolute bottom-1 h-1 w-1 rounded-full bg-[#ff8d48]"
-        ></span>
       </button>
     </div>
   </div>

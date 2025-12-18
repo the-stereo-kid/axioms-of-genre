@@ -104,7 +104,7 @@ export async function fetchUpcomingEvents(): Promise<EventWithGenres[]> {
   }
 
   const events = (data as Event[]) ?? [];
-  return populateEventGenres(events);
+  return await populateEventGenres(events);
 }
 
 /**

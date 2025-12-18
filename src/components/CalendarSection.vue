@@ -26,19 +26,19 @@
 
       <!-- Main Content: Carousel and Calendar -->
       <div v-else>
-        <!-- Desktop: Carousel (3/5) + Calendar (2/5) -->
-        <div class="hidden md:grid md:grid-cols-[3fr_2fr] md:gap-8 md:items-start">
-          <div class="flex flex-col">
+        <!-- Desktop: 3-column grid - Carousel (2 cols) + Calendar (1 col) -->
+        <div class="hidden md:grid md:grid-cols-3 md:gap-8 md:items-start">
+          <div class="col-span-2 flex flex-col min-w-0 max-w-full overflow-hidden">
             <EventCarousel ref="carouselRef" />
           </div>
-          <div class="flex flex-col justify-start">
+          <div class="flex flex-col justify-start items-end min-w-0">
             <CalendarGrid @dayClick="handleCalendarDayClick" />
           </div>
         </div>
 
         <!-- Mobile: Stacked -->
         <div class="md:hidden">
-          <div class="mb-8 flex flex-col">
+          <div class="mb-8 flex flex-col overflow-hidden">
             <EventCarousel ref="carouselRef" />
           </div>
           <div class="flex flex-col">

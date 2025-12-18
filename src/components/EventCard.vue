@@ -1,12 +1,13 @@
 <template>
   <div
     :class="[
-      'relative flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-2xl border border-gray-400/30 transition-all duration-200',
-      isPast ? 'opacity-70' : 'hover:scale-[1.02] hover:shadow-xl',
+      'relative flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-2xl transition-all duration-200',
+      isPast ? 'opacity-70' : 'hover:scale-[1.02]',
     ]"
+    style="box-shadow: 0 0 0 1px rgba(156, 163, 175, 0.3)"
   >
     <!-- Cover Image or Gradient Background -->
-    <div class="absolute inset-0">
+    <div class="absolute inset-0 rounded-2xl">
       <img
         v-if="event.cover_image"
         :src="event.cover_image"

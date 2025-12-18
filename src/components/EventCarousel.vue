@@ -1,16 +1,16 @@
 <template>
-  <div class="relative w-full overflow-hidden">
+  <div class="relative w-full max-w-full overflow-hidden">
     <Carousel
       ref="carouselRef"
       :items-to-show="itemsToShow"
       :items-to-scroll="1"
-      :wrap-around="true"
+      :wrap-around="false"
       :mouse-drag="true"
       :touch-drag="true"
       :gap="12"
       :transition="400"
       :breakpoints="breakpoints"
-      class="w-full overflow-hidden"
+      class="w-full max-w-full overflow-hidden"
     >
       <Slide v-for="event in sortedEvents" :key="event.id" :data-event-id="event.id">
         <div class="flex h-full w-full items-start justify-center p-0">
@@ -21,14 +21,16 @@
     <!-- Navigation buttons positioned below carousel -->
     <div class="mt-6 hidden justify-center gap-4 md:flex">
       <button
-        class="rounded-lg bg-black/40 px-4 py-2 text-white transition hover:bg-black/60"
+        class="rounded-lg bg-black/20 backdrop-blur-sm border border-gray/10 px-4 py-2 text-white transition hover:bg-black/70"
+        style="box-shadow: 0 0 12px rgba(100, 100, 100, 0.2)"
         @click="prev"
         aria-label="Previous"
       >
         ‹
       </button>
       <button
-        class="rounded-lg bg-black/40 px-4 py-2 text-white transition hover:bg-black/60"
+        class="rounded-lg bg-black/20 backdrop-blur-sm border border-gray/10 px-4 py-2 text-white transition hover:bg-black/70"
+        style="box-shadow: 0 0 12px rgba(100, 100, 100, 0.2)"
         @click="next"
         aria-label="Next"
       >
@@ -102,9 +104,26 @@ defineExpose({
 </script>
 
 <style scoped>
-/* Only for library-specific carousel viewport overflow */
-:deep(.carousel__viewport) {
+/* Constrain carousel width and overflow */
+:deep(.carousel) {
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
 }
-</style>
 
+:deep(.carousel__viewport) {
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+:deep(.carousel__track) {
+  width: 100%;
+  max-width: 100%;
+}
+
+:deep(.carousel__slide) {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+</style>
