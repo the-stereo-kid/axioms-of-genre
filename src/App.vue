@@ -1,7 +1,10 @@
 <template>
-  <div class="min-h-screen bg-transparent">
+  <div class="flex min-h-screen flex-col bg-transparent">
     <AppHeader />
-    <router-view />
+    <main class="flex-1">
+      <router-view />
+    </main>
+    <AppFooter />
   </div>
 </template>
 
@@ -10,6 +13,7 @@ import { onMounted } from "vue";
 import { useGenreStore } from "@/stores/genreStore";
 import { useAuthStore } from "@/stores/authStore";
 import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
 const genreStore = useGenreStore();
 const authStore = useAuthStore();
