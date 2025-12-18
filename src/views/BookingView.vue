@@ -6,6 +6,12 @@
       <p class="max-w-2xl text-base text-gray-300">
         Get in touch to book me for your event. Fill out the form below or reach out directly via
         email.
+        <br />
+      </p>
+      <h2 class="text-2xl font-semibold text-white">Rates</h2>
+      <p class="max-w-2xl text-base text-gray-300">
+        My general rates are typically a grand (R1 000) per hour but negotiable and fluctuating
+        depending on setup, event size, distance, time, etc.
       </p>
     </header>
 
@@ -63,7 +69,7 @@ how much assistance do you need with sound equipment / setup?"
 
         <button
           type="submit"
-          class="rounded-xl bg-[#ff8d48] px-6 py-3 text-base font-bold text-[#1b1b1b] transition hover:bg-[#ffc299]"
+          class="inline-flex items-center justify-center rounded-xl bg-[#ee7129] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_4px_12px_rgba(238,113,41,0.3)] transition hover:bg-[#ff8d48] hover:shadow-[0_6px_16px_rgba(238,113,41,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff8d48]"
         >
           Send Request
         </button>
